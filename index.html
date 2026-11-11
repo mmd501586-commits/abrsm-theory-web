@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="theme-color" content="#164c45">
+  <meta name="description" content="每天一小步，学懂音乐术语、符号与乐器。家庭五级乐理专项练习，支持离线使用。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>乐理小练习 · 每天一小步</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="乐理小练习，回到今天">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>乐理小练习<small>每天一小步</small></span>
+    </a>
+    <div class="header-actions"><span class="grade-label">ABRSM · 五级专项</span><button class="icon-button" type="button" data-action="settings" aria-label="打开家长设置" title="家长设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9v-3c0-3 3-4 7-4s7 1 7 4v3"/></svg></button></div>
+  </header>
+  <div id="storage-banner" class="storage-banner" role="status" hidden></div>
+  <main id="main" tabindex="-1"><div class="loading-card"><span class="eyebrow">准备练习本</span><h1>今天，也来认识一点音乐。</h1><p>正在打开你的学习记录……</p></div></main>
+  <nav id="navigation" class="bottom-nav" aria-label="主要导航"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="detail-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <input id="import-file" type="file" accept=".json,application/json" hidden>
+  <noscript><p class="notice">请启用浏览器中的 JavaScript，才能进行练习和保存学习记录。本应用无需 AI。</p></noscript>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
