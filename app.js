@@ -55,6 +55,11 @@ let pwaStatus = window.__PWA_STATUS || { ready: false, message: '离线资源正
 let toastTimer;
 let lastResult = null;
 let timerSubmitting = false;
+let speechVoices = [];
+let voiceStatus = 'loading';
+let voiceLoadTimer;
+let activeUtterance = null;
+const speechErrors = new Map();
 
 function toast(message) {
   clearTimeout(toastTimer);
@@ -155,16 +160,117 @@ function imagesMarkup(images = []) {
   return images.length ? `<div class="study-images">${images.map((image) => `<figure><img src="${esc(image.src)}" alt="${esc(image.caption || '知识谱图')}" loading="lazy">${image.caption ? `<figcaption>${esc(image.caption)}</figcaption>` : ''}</figure>`).join('')}</div>` : '';
 }
 
+function speechSupported() {
+  return typeof window.speechSynthesis?.getVoices === 'function' && typeof window.SpeechSynthesisUtterance === 'function';
+}
+
 function localVoice(card) {
-  if (!('speechSynthesis' in window) || !LANGUAGE_CODES[card.language]) return null;
-  return speechSynthesis.getVoices().find((voice) => voice.localService && voice.lang.toLowerCase().replace('_', '-').startsWith(LANGUAGE_CODES[card.language])) || null;
+  const code = LANGUAGE_CODES[card.language];
+  if (!speechSupported() || !code) return null;
+  return speechVoices.find((voice) => voice.localService === true && String(voice.lang || '').toLowerCase().split(/[-_]/)[0] === code) || null;
+}
+
+function audioHint(card) {
+  const languageName = LANG[card.language] || card.language || '该语言';
+  if (voiceStatus === 'unsupported') return '当前浏览器不支持本机语音朗读；不影响学习和答题。';
+  if (speechErrors.has(card.id)) return speechErrors.get(card.id);
+  if (localVoice(card)) return `使用本机${languageName}语音辅助记忆，读音不计分。`;
+  if (voiceStatus === 'loading') return '正在读取本机语音，请稍候。';
+  return `浏览器尚未提供${languageName}的本地语音；不影响学习和答题。`;
+}
+
+function audioHelpMarkup(card) {
+  const languageName = esc(LANG[card.language] || card.language || '对应语言');
+  const userAgent = navigator.userAgent || '';
+  const instructions = /Android/i.test(userAgent)
+    ? `在手机设置中搜索“文字转语音”或“TTS”，进入当前语音引擎的“安装语音数据”，添加${languageName}；返回浏览器重新检测。不同品牌菜单可能不同。即使已安装，部分安卓浏览器也可能无法提供该语音。`
+    : /Windows/i.test(userAgent)
+      ? `在 Windows 设置 → 时间和语言 → 语音 → 管理语音 → 添加语音中，添加${languageName}。完成后重启 Edge，再点“重新检测”。已安装的语音仍需浏览器支持才能使用。`
+      : `请在设备的文字转语音设置中安装${languageName}语音，再返回浏览器重新检测。不同设备的设置入口不同；已安装的语音仍需浏览器支持才能使用。`;
+  return `<details class="source-list" data-audio-help ${voiceStatus !== 'ready' || localVoice(card) ? 'hidden' : ''}><summary>如何添加${languageName}本机语音</summary><p>${instructions}</p><p>普通和慢速朗读只使用浏览器提供的对应语言本地语音。</p></details>`;
+}
+
+function audioMarkup(card) {
+  const voice = localVoice(card);
+  return `<div data-audio-card="${esc(card.id)}"><div class="audio-row">${button('speak', `${icon('sound')} 听读音`, 'secondary-button', `data-card="${esc(card.id)}" data-rate="0.9" ${voice ? '' : 'disabled'}`)}${button('speak', '慢一点', 'secondary-button', `data-card="${esc(card.id)}" data-rate="0.65" ${voice ? '' : 'disabled'}`)}</div><p class="audio-hint" data-audio-status role="status">${esc(audioHint(card))}</p>${button('retry-voices', '重新检测', 'text-button')}${audioHelpMarkup(card)}</div>`;
+}
+
+function refreshAudioAreas() {
+  // Update only speech controls, preserving revealed answers, session DOM and focus.
+  document.querySelectorAll('[data-audio-card]').forEach((area) => {
+    const card = cards.get(area.dataset.audioCard);
+    if (!card) return;
+    const voice = localVoice(card);
+    area.querySelectorAll('[data-action="speak"]').forEach((control) => { control.disabled = !voice; });
+    const hint = area.querySelector('[data-audio-status]');
+    const message = audioHint(card);
+    if (hint.textContent !== message) hint.textContent = message;
+    const help = area.querySelector('[data-audio-help]');
+    if (!help.contains(document.activeElement)) help.hidden = voiceStatus !== 'ready' || Boolean(voice);
+  });
+}
+
+function refreshVoices(complete = false) {
+  if (!speechSupported()) {
+    speechVoices = [];
+    voiceStatus = 'unsupported';
+    clearTimeout(voiceLoadTimer);
+  } else {
+    try { speechVoices = Array.from(window.speechSynthesis.getVoices()); }
+    catch { speechVoices = []; }
+    if (speechVoices.length || complete) {
+      voiceStatus = 'ready';
+      clearTimeout(voiceLoadTimer);
+    }
+  }
+  refreshAudioAreas();
+}
+
+function detectVoices() {
+  clearTimeout(voiceLoadTimer);
+  speechErrors.clear();
+  voiceStatus = 'loading';
+  voiceLoadTimer = setTimeout(() => refreshVoices(true), 2000);
+  refreshVoices();
+}
+
+function speakCard(card, rate) {
+  refreshVoices();
+  const voice = localVoice(card);
+  if (!voice) { toast(audioHint(card)); return; }
+  speechErrors.delete(card.id);
+  refreshAudioAreas();
+  const utterance = new window.SpeechSynthesisUtterance(card.title.replace(/\s*\([^)]*\)/g, ''));
+  utterance.voice = voice;
+  utterance.lang = voice.lang;
+  utterance.rate = rate === 0.65 ? 0.65 : 0.9;
+  const reportError = (error) => {
+    if (activeUtterance !== utterance) return;
+    activeUtterance = null;
+    if (['canceled', 'interrupted'].includes(error)) return;
+    const languageName = LANG[card.language] || card.language || '该语言';
+    const message = error === 'not-allowed'
+      ? '浏览器未允许这次朗读，请再次点击“听读音”。'
+      : ['audio-busy', 'audio-hardware'].includes(error)
+        ? '暂时无法播放声音，请检查设备音量和音频输出后重试。'
+        : `${languageName}本机语音这次未能播放，请重新检测后再试。`;
+    speechErrors.set(card.id, message);
+    refreshAudioAreas();
+    toast(message);
+  };
+  utterance.onerror = (event) => reportError(event.error);
+  utterance.onend = () => { if (activeUtterance === utterance) activeUtterance = null; };
+  activeUtterance = utterance;
+  try {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  } catch { reportError('synthesis-failed'); }
 }
 
 function cardMarkup(card, { study = false, forceReveal = false } = {}) {
   const isRevealed = forceReveal || revealed.has(card.id);
-  const voice = localVoice(card);
   const related = (card.relatedIds || []).map((id) => cards.get(id)).filter(Boolean);
-  return `<div class="row"><span class="pill">${esc(CAT[card.category])}</span>${card.language ? `<span class="pill coral">${esc(LANG[card.language] || card.language)}</span>` : ''}${card.level ? `<span class="small muted">教材第 ${esc(card.level)} 级</span>` : ''}</div><h3 class="study-title">${esc(card.title)}</h3>${card.category === 'terms' ? `<div class="audio-row">${button('speak', `${icon('sound')} 听读音`, 'secondary-button', `data-card="${esc(card.id)}" data-rate="0.9" ${voice ? '' : 'disabled'}`)}${button('speak', '慢一点', 'secondary-button', `data-card="${esc(card.id)}" data-rate="0.65" ${voice ? '' : 'disabled'}`)}</div><p class="audio-hint">${voice ? '使用本机对应语言语音辅助记忆，读音不计分。' : '这台设备暂未提供对应语言的本地语音；不影响学习和答题。'}</p>` : imagesMarkup(card.images || [])}
+  return `<div class="row"><span class="pill">${esc(CAT[card.category])}</span>${card.language ? `<span class="pill coral">${esc(LANG[card.language] || card.language)}</span>` : ''}${card.level ? `<span class="small muted">教材第 ${esc(card.level)} 级</span>` : ''}</div><h3 class="study-title">${esc(card.title)}</h3>${card.category === 'terms' ? audioMarkup(card) : imagesMarkup(card.images || [])}
     ${isRevealed ? `<div class="meaning" data-testid="card-meaning">${esc(card.meaning || '')}</div>${card.explanation ? `<p class="muted">${esc(card.explanation)}</p>` : ''}${(card.facts || []).length ? `<ul class="facts">${card.facts.map((fact) => `<li><span class="label">${esc(fact.label)}</span><span>${esc(fact.value)}${fact.scope ? `<small class="scope">${esc(fact.scope)}</small>` : ''}</span></li>`).join('')}</ul>` : ''}${related.length ? `<h3 class="small">一起比较，更容易记住</h3><div class="related-list">${related.slice(0, 12).map((item) => `<button type="button" class="text-button" data-action="open-card" data-card="${esc(item.id)}">${esc(item.title)}</button>`).join('')}</div>` : ''}${sourcesMarkup(card.sources)}<div class="row spacer">${button(study ? 'begin-recall' : 'mark-learned', `${study ? '看懂了，开始回忆' : '我看懂了'} ${icon('check')}`, 'primary-button', `data-card="${esc(card.id)}" data-testid="${study ? 'begin-recall' : 'mark-learned'}"`)}${!study ? button('practice-card', '练一练这个知识', 'secondary-button', `data-card="${esc(card.id)}"`) : ''}</div>` : `<div class="reveal-panel"><p>先试着说出它的意思，再翻开答案。</p>${button('reveal-card', '翻开看看', 'primary-button', `data-card="${esc(card.id)}" data-testid="reveal-card"`)}</div>`}`;
 }
 
@@ -334,12 +440,11 @@ async function handleAction(target) {
       const matching = DATA.questions.filter((item) => item.knowledgeIds.includes(target.dataset.card) && item.role !== 'hold').map((item) => item.id);
       await startSession(matching.slice(0, 5), 'practice'); break;
     }
+    case 'retry-voices': detectVoices(); break;
     case 'speak': {
-      const card = cards.get(target.dataset.card); const voice = card && localVoice(card);
-      if (!voice) { toast('未找到这门语言的本地语音。'); break; }
-      const utterance = new SpeechSynthesisUtterance(card.title.replace(/\s*\([^)]*\)/g, ''));
-      utterance.voice = voice; utterance.lang = voice.lang; utterance.rate = Number(target.dataset.rate) || .9;
-      speechSynthesis.cancel(); speechSynthesis.speak(utterance); break;
+      const card = cards.get(target.dataset.card);
+      if (card) speakCard(card, Number(target.dataset.rate));
+      break;
     }
     case 'practice-category': practiceCategory = target.dataset.category; render(); break;
     case 'wrong-practice': practiceMode = 'mistakes'; practiceCategory = 'all'; practiceDirection = 'all'; navigate('practice'); break;
@@ -440,7 +545,8 @@ window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault
 window.addEventListener('pwa-status', (event) => { pwaStatus = event.detail; if (route === 'home') render(); });
 window.addEventListener('appinstalled', () => { deferredInstall = null; toast('已添加到设备，请从桌面图标打开试试。'); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') updateTimer(); });
-if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', () => { if (dialog.open && currentDialogCard) showCard(currentDialogCard); });
+if (speechSupported()) window.speechSynthesis.addEventListener('voiceschanged', () => refreshVoices());
+detectVoices();
 dialog.addEventListener('click', (event) => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); } });
 
 try {
