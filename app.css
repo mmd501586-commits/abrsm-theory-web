@@ -14,3 +14,7 @@
 
 /* Keep standalone controls comfortable for small hands. */
 .chip,.text-button,.audio-row button,.flag-button,.jump-button,.history-list .ghost-button,.header-actions .icon-button{min-height:44px}.jump-button{width:44px}.header-actions .icon-button{width:44px;min-width:44px}.source-list summary{min-height:44px}
+
+/* Three recording samples stay readable and tappable on a phone. */
+.audio-trial-banner{justify-content:space-between}.audio-trial-banner p{margin:0}.audio-sample-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.audio-sample-card{min-width:0}.audio-sample-card .study-title{font-size:34px}.audio-sample-card .audio-row{flex-wrap:wrap}.audio-source p{overflow-wrap:anywhere}
+@media(max-width:760px){.audio-sample-grid{grid-template-columns:1fr}.audio-trial-banner .secondary-button{width:100%}}
