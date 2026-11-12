@@ -1,5 +1,5 @@
 import { DATA } from './data.js';
-import { AUDIO_SAMPLES } from './audio-samples.js';
+import { AUDIO_RECORDINGS, AUDIO_SAMPLES } from './audio-samples.js';
 import {
   createState, dayKey, skillKey, buildDailyPlan, selectPractice, buildExam,
   shuffleOptions, recordAnswer, markLearned, summarize, finishExam,
@@ -15,8 +15,9 @@ const LANG = { Italian: '意大利语', French: '法语', German: '德语' };
 const LANGUAGE_CODES = { Italian: 'it', French: 'fr', German: 'de' };
 const questions = new Map(DATA.questions.map((item) => [item.id, item]));
 const cards = new Map(DATA.cards.map((item) => [item.id, item]));
-const audioSamples = (Array.isArray(AUDIO_SAMPLES) ? AUDIO_SAMPLES : []).filter((sample) => cards.has(sample.cardId));
-const samplesByCard = new Map(audioSamples.map((sample) => [sample.cardId, sample]));
+const audioRecordings = (Array.isArray(AUDIO_RECORDINGS) ? AUDIO_RECORDINGS : []).filter((recording) => cards.get(recording.cardId)?.category === 'terms');
+const recordingsByCard = new Map(audioRecordings.map((recording) => [recording.cardId, recording]));
+const audioSamples = (Array.isArray(AUDIO_SAMPLES) ? AUDIO_SAMPLES : []).filter((sample) => recordingsByCard.has(sample.cardId));
 const main = $('#main');
 const dialog = $('#detail-dialog');
 const icons = {
@@ -138,7 +139,7 @@ function renderHome() {
   const count = plan.items.length;
   return `<section class="hero"><div><span class="eyebrow">${esc(todayLabel())}</span><h1>每天一小步，<br>把音乐记牢。</h1><p>先想一想，再看答案。<br>用十来分钟，让熟悉的知识更稳一点。</p><div class="row">${button('start-daily', `${count ? `开始今日 ${count} 项任务` : '看看今天学了什么'} ${icon('arrow')}`, 'primary-button', 'data-testid="start-daily"')}<span class="pill white">建议 10–15 分钟</span></div></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><div class="practice-book"><span class="book-tab"></span><small>MY MUSIC NOTEBOOK</small><strong>一小步<br>一音符</strong><div class="book-lines"></div></div></div></section>
     ${resumeBlock()}
-    <div class="notice row audio-trial-banner"><p>意大利语、德语、法语各 1 条内置录音，先用手机听一听。</p>${button('go-audio', `${icon('sound')} 试听3个读音样本`, 'secondary-button', 'data-testid="open-audio-samples"')}</div>
+    <div class="notice row audio-trial-banner"><p>已内置 ${recordingsByCard.size} 个术语读音，打开知识卡片即可听普通或慢速。</p><div class="row">${button('browse-category', `${icon('sound')} 去知识页听读音`, 'secondary-button', 'data-category="terms" data-testid="open-audio-terms"')}${button('go-audio', '试听3个读音样本', 'ghost-button', 'data-testid="open-audio-samples"')}</div></div>
     <div class="stats-strip"><div class="stat"><strong>${plan.dueCount || 0}</strong><span>到期复习</span></div><div class="stat"><strong>${plan.newCount || 0}</strong><span>今日新知识</span></div><div class="stat"><strong>${plan.retryCount || 0}</strong><span>短时重测</span></div><div class="stat"><strong>${summary.todayAnswers || 0}</strong><span>今天已作答</span></div></div>
     ${(plan.extensionCount || plan.remainingDueCount) ? `<p class="small muted">${plan.extensionCount ? `今天另有 ${plan.extensionCount} 项“换个角度”，练练熟悉知识的新方向。` : ''}${plan.remainingDueCount ? `本组完成后还有 ${plan.remainingDueCount} 项到期内容，可分批继续。` : ''}</p>` : ''}
     <div class="section-title"><h2>你的三本小练习册</h2><span class="eyebrow">LEARN · RECALL · REMEMBER</span></div>
@@ -179,37 +180,43 @@ function localVoice(card) {
   return speechVoices.find((voice) => voice.localService === true && String(voice.lang || '').toLowerCase().split(/[-_]/)[0] === code) || null;
 }
 
-function audioHint(card) {
-  const sample = samplesByCard.get(card.id);
-  if (speechErrors.has(card.id)) return speechErrors.get(card.id);
-  if (sample) {
-    if (activeAudioCard === card.id) return audioLoading ? '正在载入内置录音…' : '正在播放内置录音。';
-    return `内置录音：${sample.title || card.title}。普通原速，慢速为 0.75 倍播放；读音不计分。`;
-  }
-  const languageName = LANG[card.language] || card.language || '该语言';
-  const sampleNotice = '本轮仅提供3个内置音频样本，此词尚未收录。';
-  if (voiceStatus === 'unsupported') return `${sampleNotice}当前浏览器不支持本机语音朗读；不影响学习和答题。`;
-  if (localVoice(card)) return `${sampleNotice}此处使用本机${languageName}语音辅助记忆，读音不计分。`;
-  if (voiceStatus === 'loading') return `${sampleNotice}正在读取本机语音，请稍候。`;
-  return `${sampleNotice}浏览器尚未提供${languageName}的本地语音；不影响学习和答题。`;
+function audioKindLabel(recording) {
+  return recording.kind === 'synthesized' ? '离线合成读音' : recording.kind === 'recording' ? '真人录音' : '内置音频';
 }
 
-function audioSourceMarkup(sample) {
+function audioHint(card) {
+  const recording = recordingsByCard.get(card.id);
+  if (speechErrors.has(card.id)) return speechErrors.get(card.id);
+  if (recording) {
+    const kind = audioKindLabel(recording);
+    if (activeAudioCard === card.id) return audioLoading ? `正在载入${kind}…` : `正在播放${kind}。`;
+    return `${kind}：${recording.title || card.title}。普通原速，慢速为 0.75 倍播放；读音不计分。`;
+  }
+  const languageName = LANG[card.language] || card.language || '该语言';
+  const unavailableNotice = '此词暂未内置音频。';
+  if (voiceStatus === 'unsupported') return `${unavailableNotice}当前浏览器不支持本机语音朗读；不影响学习和答题。`;
+  if (localVoice(card)) return `${unavailableNotice}此处使用本机${languageName}语音辅助记忆，读音不计分。`;
+  if (voiceStatus === 'loading') return `${unavailableNotice}正在读取本机语音，请稍候。`;
+  return `${unavailableNotice}浏览器尚未提供${languageName}的本地语音；不影响学习和答题。`;
+}
+
+function audioSourceMarkup(recording) {
   const link = (url, text) => /^https?:\/\//.test(url || '') ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(text)}</a>` : esc(text);
-  return `<details class="source-list audio-source" data-audio-source><summary>录音来源与使用说明</summary><p>录音：${esc(sample.title)} · 作者：${esc(sample.author)}</p><p>来源：${link(sample.sourceUrl, '原始录音页面')}</p><p>许可：${link(sample.licenseUrl, sample.license)}</p><p>音频处理：${esc(sample.modification || '转为 MP3 供本应用播放。')}</p><p>慢速按钮以 0.75 倍播放同一录音，并尽量保持音高。样本供手机试听，尚未完成人工听审。</p></details>`;
+  const synthesized = recording.kind === 'synthesized';
+  return `<details class="source-list audio-source" data-audio-source><summary>${synthesized ? '音源与使用说明' : '录音来源与使用说明'}</summary><p>${audioKindLabel(recording)}：${esc(recording.title)}</p><p>${synthesized ? '音源' : '作者'}：${esc(recording.author)}</p>${synthesized || recording.spokenText ? `<p>朗读文本：${esc(recording.spokenText || recording.title)}</p>` : ''}<p>来源：${link(recording.sourceUrl, synthesized ? '音源模型页面' : '原始录音页面')}</p><p>${synthesized ? '音源许可' : '许可'}：${link(recording.licenseUrl, recording.license)}</p><p>音频处理：${esc(recording.modification || '转为 MP3 供本应用播放。')}</p>${synthesized ? '<p>读音由本机离线生成后随应用内置；播放时不调用语音生成服务。</p>' : ''}<p>慢速按钮以 0.75 倍播放同一音频，并尽量保持音高。读音辅助记忆，尚未完成逐条人工听审。</p></details>`;
 }
 
 function audioMarkup(card) {
-  const sample = samplesByCard.get(card.id);
-  const enabled = sample || localVoice(card);
-  return `<div data-audio-card="${esc(card.id)}" data-audio-kind="${sample ? 'sample' : 'local-voice'}"><div class="audio-row">${button('speak', `${icon('sound')} 听读音`, 'secondary-button', `data-card="${esc(card.id)}" data-rate="${sample ? '1' : '0.9'}" ${enabled ? '' : 'disabled'}`)}${button('speak', '慢一点', 'secondary-button', `data-card="${esc(card.id)}" data-rate="${sample ? '0.75' : '0.65'}" ${enabled ? '' : 'disabled'}`)}</div><p class="audio-hint" data-audio-status role="status">${esc(audioHint(card))}</p>${sample ? audioSourceMarkup(sample) : `${button('retry-voices', '重新检测本机语音', 'text-button')}${button('go-audio', '试听3个内置样本', 'text-button')}`}</div>`;
+  const recording = recordingsByCard.get(card.id);
+  const enabled = recording || localVoice(card);
+  return `<div data-audio-card="${esc(card.id)}" data-audio-kind="${esc(recording?.kind || 'local-voice')}">${recording ? `<p class="small"><span class="pill" data-audio-kind-label>${audioKindLabel(recording)}</span></p>` : ''}<div class="audio-row">${button('speak', `${icon('sound')} 听读音`, 'secondary-button', `data-card="${esc(card.id)}" data-rate="${recording ? '1' : '0.9'}" ${enabled ? '' : 'disabled'}`)}${button('speak', '慢一点', 'secondary-button', `data-card="${esc(card.id)}" data-rate="${recording ? '0.75' : '0.65'}" ${enabled ? '' : 'disabled'}`)}</div><p class="audio-hint" data-audio-status role="status">${esc(audioHint(card))}</p>${recording ? audioSourceMarkup(recording) : `${button('retry-voices', '重新检测本机语音', 'text-button')}${button('go-audio', '试听3个内置样本', 'text-button')}`}</div>`;
 }
 
 function renderAudio() {
-  return `<section data-testid="audio-samples"><div class="heading-row"><div><span class="eyebrow">LISTEN TO THREE WORDS</span><h1>先听听这三个词</h1><p>意大利语、德语、法语各 1 条真人录音样本。先确认手机能否正常播放，再补充其他术语。</p></div></div><p class="notice">先听普通读音，再试慢速。试听不会标记掌握或修改学习记录。</p><div class="audio-sample-grid spacer">${audioSamples.map((sample) => {
+  return `<section data-testid="audio-samples"><div class="heading-row"><div><span class="eyebrow">LISTEN TO THREE WORDS</span><h1>先听听这三个词</h1><p>已内置 ${recordingsByCard.size} 个术语读音，可在知识页逐词播放。这里保留意大利语、德语、法语各 1 条真人录音样本。</p></div></div><p class="notice">先听普通读音，再试慢速。试听不会标记掌握或修改学习记录。</p><div class="audio-sample-grid spacer">${audioSamples.map((sample) => {
     const card = cards.get(sample.cardId);
     return `<section class="panel audio-sample-card" data-testid="audio-sample" data-card="${esc(card.id)}"><h2>${esc(LANG[sample.language] || LANG[card.language] || sample.language)}</h2><h3 class="study-title">${esc(sample.title || card.title)}</h3>${audioMarkup(card)}</section>`;
-  }).join('') || empty('录音样本尚未准备好', '请稍后重新打开本页。')}</div><div class="row spacer">${button('go-home', `${icon('back')} 回到今天`, 'ghost-button')}</div></section>`;
+  }).join('') || empty('录音样本尚未准备好', '请稍后重新打开本页。')}</div><div class="row spacer">${button('browse-category', '去知识页听全部术语', 'primary-button', 'data-category="terms" data-testid="open-audio-terms"')}${button('go-home', `${icon('back')} 回到今天`, 'ghost-button')}</div></section>`;
 }
 
 function refreshAudioAreas() {
@@ -217,7 +224,7 @@ function refreshAudioAreas() {
   document.querySelectorAll('[data-audio-card]').forEach((area) => {
     const card = cards.get(area.dataset.audioCard);
     if (!card) return;
-    const enabled = samplesByCard.has(card.id) || Boolean(localVoice(card));
+    const enabled = recordingsByCard.has(card.id) || Boolean(localVoice(card));
     area.querySelectorAll('[data-action="speak"]').forEach((control) => { control.disabled = !enabled; });
     const hint = area.querySelector('[data-audio-status]');
     const message = audioHint(card);
@@ -257,8 +264,8 @@ function playSample(card, sample, rate) {
     const message = error?.name === 'NotAllowedError'
       ? '浏览器未允许这次播放，请再次点击“听读音”重试。'
       : audio?.error?.code === 2
-        ? '录音暂时无法载入，请联网后再次点击“听读音”重试。'
-        : '这条录音暂时未能播放，请再次点击“听读音”重试。';
+        ? '音频暂时无法载入，请联网后再次点击“听读音”重试。'
+        : '这条音频暂时未能播放，请再次点击“听读音”重试。';
     speechErrors.set(card.id, message);
     refreshAudioAreas();
     toast(message);
@@ -539,7 +546,7 @@ async function handleAction(target) {
     case 'speak': {
       const card = cards.get(target.dataset.card);
       if (card) {
-        const sample = samplesByCard.get(card.id);
+        const sample = recordingsByCard.get(card.id);
         if (sample) playSample(card, sample, Number(target.dataset.rate));
         else speakCard(card, Number(target.dataset.rate));
       }
