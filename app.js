@@ -1,4 +1,5 @@
 import { DATA } from './data.js';
+import { AUDIO_SAMPLES } from './audio-samples.js';
 import {
   createState, dayKey, skillKey, buildDailyPlan, selectPractice, buildExam,
   shuffleOptions, recordAnswer, markLearned, summarize, finishExam,
@@ -14,6 +15,8 @@ const LANG = { Italian: '意大利语', French: '法语', German: '德语' };
 const LANGUAGE_CODES = { Italian: 'it', French: 'fr', German: 'de' };
 const questions = new Map(DATA.questions.map((item) => [item.id, item]));
 const cards = new Map(DATA.cards.map((item) => [item.id, item]));
+const audioSamples = (Array.isArray(AUDIO_SAMPLES) ? AUDIO_SAMPLES : []).filter((sample) => cards.has(sample.cardId));
+const samplesByCard = new Map(audioSamples.map((sample) => [sample.cardId, sample]));
 const main = $('#main');
 const dialog = $('#detail-dialog');
 const icons = {
@@ -59,6 +62,10 @@ let speechVoices = [];
 let voiceStatus = 'loading';
 let voiceLoadTimer;
 let activeUtterance = null;
+let activeAudio = null;
+let activeAudioCard = null;
+let audioLoading = false;
+let playbackToken = 0;
 const speechErrors = new Map();
 
 function toast(message) {
@@ -93,7 +100,8 @@ async function persist() {
 }
 
 function navigate(next) {
-  const valid = ['home', 'learn', 'practice', 'exam', 'report', 'session', 'result'];
+  const valid = ['home', 'learn', 'practice', 'exam', 'report', 'session', 'result', 'audio'];
+  stopPlayback();
   next = valid.includes(next) ? next : 'home';
   if (location.hash === `#${next}`) { route = next; render(); }
   else location.hash = next;
@@ -101,7 +109,7 @@ function navigate(next) {
 }
 
 function renderNavigation() {
-  let selected = route;
+  let selected = route === 'audio' ? 'home' : route;
   if (['session', 'result'].includes(route)) selected = state.activeSession?.mode === 'exam' ? 'exam' : 'practice';
   $('#navigation').innerHTML = [['home', '今天'], ['learn', '知识'], ['practice', '练习'], ['exam', '模拟'], ['report', '记录']].map(([id, title]) => `<a href="#${id}" class="nav-button ${selected === id ? 'active' : ''}" data-testid="nav-${id}" ${selected === id ? 'aria-current="page"' : ''}>${icon(id)}<span>${title}</span></a>`).join('');
 }
@@ -112,7 +120,7 @@ function render() {
   syncStorageBanner();
   if (route === 'session' && !state.activeSession) route = 'home';
   if (route === 'session' && state.activeSession?.completed) route = 'result';
-  const renderers = { home: renderHome, learn: renderLearn, practice: renderPractice, exam: renderExam, report: renderReport, session: renderSession, result: renderResult };
+  const renderers = { home: renderHome, learn: renderLearn, practice: renderPractice, exam: renderExam, report: renderReport, session: renderSession, result: renderResult, audio: renderAudio };
   main.innerHTML = `<div class="page">${(renderers[route] || renderHome)()}</div>`;
   updateTimer();
 }
@@ -130,6 +138,7 @@ function renderHome() {
   const count = plan.items.length;
   return `<section class="hero"><div><span class="eyebrow">${esc(todayLabel())}</span><h1>每天一小步，<br>把音乐记牢。</h1><p>先想一想，再看答案。<br>用十来分钟，让熟悉的知识更稳一点。</p><div class="row">${button('start-daily', `${count ? `开始今日 ${count} 项任务` : '看看今天学了什么'} ${icon('arrow')}`, 'primary-button', 'data-testid="start-daily"')}<span class="pill white">建议 10–15 分钟</span></div></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><div class="practice-book"><span class="book-tab"></span><small>MY MUSIC NOTEBOOK</small><strong>一小步<br>一音符</strong><div class="book-lines"></div></div></div></section>
     ${resumeBlock()}
+    <div class="notice row audio-trial-banner"><p>意大利语、德语、法语各 1 条内置录音，先用手机听一听。</p>${button('go-audio', `${icon('sound')} 试听3个读音样本`, 'secondary-button', 'data-testid="open-audio-samples"')}</div>
     <div class="stats-strip"><div class="stat"><strong>${plan.dueCount || 0}</strong><span>到期复习</span></div><div class="stat"><strong>${plan.newCount || 0}</strong><span>今日新知识</span></div><div class="stat"><strong>${plan.retryCount || 0}</strong><span>短时重测</span></div><div class="stat"><strong>${summary.todayAnswers || 0}</strong><span>今天已作答</span></div></div>
     ${(plan.extensionCount || plan.remainingDueCount) ? `<p class="small muted">${plan.extensionCount ? `今天另有 ${plan.extensionCount} 项“换个角度”，练练熟悉知识的新方向。` : ''}${plan.remainingDueCount ? `本组完成后还有 ${plan.remainingDueCount} 项到期内容，可分批继续。` : ''}</p>` : ''}
     <div class="section-title"><h2>你的三本小练习册</h2><span class="eyebrow">LEARN · RECALL · REMEMBER</span></div>
@@ -171,43 +180,123 @@ function localVoice(card) {
 }
 
 function audioHint(card) {
-  const languageName = LANG[card.language] || card.language || '该语言';
-  if (voiceStatus === 'unsupported') return '当前浏览器不支持本机语音朗读；不影响学习和答题。';
+  const sample = samplesByCard.get(card.id);
   if (speechErrors.has(card.id)) return speechErrors.get(card.id);
-  if (localVoice(card)) return `使用本机${languageName}语音辅助记忆，读音不计分。`;
-  if (voiceStatus === 'loading') return '正在读取本机语音，请稍候。';
-  return `浏览器尚未提供${languageName}的本地语音；不影响学习和答题。`;
+  if (sample) {
+    if (activeAudioCard === card.id) return audioLoading ? '正在载入内置录音…' : '正在播放内置录音。';
+    return `内置录音：${sample.title || card.title}。普通原速，慢速为 0.75 倍播放；读音不计分。`;
+  }
+  const languageName = LANG[card.language] || card.language || '该语言';
+  const sampleNotice = '本轮仅提供3个内置音频样本，此词尚未收录。';
+  if (voiceStatus === 'unsupported') return `${sampleNotice}当前浏览器不支持本机语音朗读；不影响学习和答题。`;
+  if (localVoice(card)) return `${sampleNotice}此处使用本机${languageName}语音辅助记忆，读音不计分。`;
+  if (voiceStatus === 'loading') return `${sampleNotice}正在读取本机语音，请稍候。`;
+  return `${sampleNotice}浏览器尚未提供${languageName}的本地语音；不影响学习和答题。`;
 }
 
-function audioHelpMarkup(card) {
-  const languageName = esc(LANG[card.language] || card.language || '对应语言');
-  const userAgent = navigator.userAgent || '';
-  const instructions = /Android/i.test(userAgent)
-    ? `在手机设置中搜索“文字转语音”或“TTS”，进入当前语音引擎的“安装语音数据”，添加${languageName}；返回浏览器重新检测。不同品牌菜单可能不同。即使已安装，部分安卓浏览器也可能无法提供该语音。`
-    : /Windows/i.test(userAgent)
-      ? `在 Windows 设置 → 时间和语言 → 语音 → 管理语音 → 添加语音中，添加${languageName}。完成后重启 Edge，再点“重新检测”。已安装的语音仍需浏览器支持才能使用。`
-      : `请在设备的文字转语音设置中安装${languageName}语音，再返回浏览器重新检测。不同设备的设置入口不同；已安装的语音仍需浏览器支持才能使用。`;
-  return `<details class="source-list" data-audio-help ${voiceStatus !== 'ready' || localVoice(card) ? 'hidden' : ''}><summary>如何添加${languageName}本机语音</summary><p>${instructions}</p><p>普通和慢速朗读只使用浏览器提供的对应语言本地语音。</p></details>`;
+function audioSourceMarkup(sample) {
+  const link = (url, text) => /^https?:\/\//.test(url || '') ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(text)}</a>` : esc(text);
+  return `<details class="source-list audio-source" data-audio-source><summary>录音来源与使用说明</summary><p>录音：${esc(sample.title)} · 作者：${esc(sample.author)}</p><p>来源：${link(sample.sourceUrl, '原始录音页面')}</p><p>许可：${link(sample.licenseUrl, sample.license)}</p><p>音频处理：${esc(sample.modification || '转为 MP3 供本应用播放。')}</p><p>慢速按钮以 0.75 倍播放同一录音，并尽量保持音高。样本供手机试听，尚未完成人工听审。</p></details>`;
 }
 
 function audioMarkup(card) {
-  const voice = localVoice(card);
-  return `<div data-audio-card="${esc(card.id)}"><div class="audio-row">${button('speak', `${icon('sound')} 听读音`, 'secondary-button', `data-card="${esc(card.id)}" data-rate="0.9" ${voice ? '' : 'disabled'}`)}${button('speak', '慢一点', 'secondary-button', `data-card="${esc(card.id)}" data-rate="0.65" ${voice ? '' : 'disabled'}`)}</div><p class="audio-hint" data-audio-status role="status">${esc(audioHint(card))}</p>${button('retry-voices', '重新检测', 'text-button')}${audioHelpMarkup(card)}</div>`;
+  const sample = samplesByCard.get(card.id);
+  const enabled = sample || localVoice(card);
+  return `<div data-audio-card="${esc(card.id)}" data-audio-kind="${sample ? 'sample' : 'local-voice'}"><div class="audio-row">${button('speak', `${icon('sound')} 听读音`, 'secondary-button', `data-card="${esc(card.id)}" data-rate="${sample ? '1' : '0.9'}" ${enabled ? '' : 'disabled'}`)}${button('speak', '慢一点', 'secondary-button', `data-card="${esc(card.id)}" data-rate="${sample ? '0.75' : '0.65'}" ${enabled ? '' : 'disabled'}`)}</div><p class="audio-hint" data-audio-status role="status">${esc(audioHint(card))}</p>${sample ? audioSourceMarkup(sample) : `${button('retry-voices', '重新检测本机语音', 'text-button')}${button('go-audio', '试听3个内置样本', 'text-button')}`}</div>`;
+}
+
+function renderAudio() {
+  return `<section data-testid="audio-samples"><div class="heading-row"><div><span class="eyebrow">LISTEN TO THREE WORDS</span><h1>先听听这三个词</h1><p>意大利语、德语、法语各 1 条真人录音样本。先确认手机能否正常播放，再补充其他术语。</p></div></div><p class="notice">先听普通读音，再试慢速。试听不会标记掌握或修改学习记录。</p><div class="audio-sample-grid spacer">${audioSamples.map((sample) => {
+    const card = cards.get(sample.cardId);
+    return `<section class="panel audio-sample-card" data-testid="audio-sample" data-card="${esc(card.id)}"><h2>${esc(LANG[sample.language] || LANG[card.language] || sample.language)}</h2><h3 class="study-title">${esc(sample.title || card.title)}</h3>${audioMarkup(card)}</section>`;
+  }).join('') || empty('录音样本尚未准备好', '请稍后重新打开本页。')}</div><div class="row spacer">${button('go-home', `${icon('back')} 回到今天`, 'ghost-button')}</div></section>`;
 }
 
 function refreshAudioAreas() {
-  // Update only speech controls, preserving revealed answers, session DOM and focus.
+  // Update only audio controls, preserving revealed answers, session DOM and focus.
   document.querySelectorAll('[data-audio-card]').forEach((area) => {
     const card = cards.get(area.dataset.audioCard);
     if (!card) return;
-    const voice = localVoice(card);
-    area.querySelectorAll('[data-action="speak"]').forEach((control) => { control.disabled = !voice; });
+    const enabled = samplesByCard.has(card.id) || Boolean(localVoice(card));
+    area.querySelectorAll('[data-action="speak"]').forEach((control) => { control.disabled = !enabled; });
     const hint = area.querySelector('[data-audio-status]');
     const message = audioHint(card);
     if (hint.textContent !== message) hint.textContent = message;
-    const help = area.querySelector('[data-audio-help]');
-    if (!help.contains(document.activeElement)) help.hidden = voiceStatus !== 'ready' || Boolean(voice);
   });
+}
+
+function stopPlayback() {
+  playbackToken++;
+  const previousAudio = activeAudio;
+  activeAudio = null;
+  activeAudioCard = null;
+  audioLoading = false;
+  if (previousAudio) {
+    previousAudio.onplaying = previousAudio.onended = previousAudio.onerror = null;
+    previousAudio.pause();
+    try { previousAudio.currentTime = 0; } catch {}
+    previousAudio.remove();
+  }
+  if (activeUtterance) {
+    activeUtterance = null;
+    try { window.speechSynthesis?.cancel(); } catch {}
+  }
+  refreshAudioAreas();
+}
+
+function playSample(card, sample, rate) {
+  stopPlayback();
+  speechErrors.delete(card.id);
+  const token = playbackToken;
+  let audio;
+  const reportError = (error) => {
+    if (token !== playbackToken || (audio && activeAudio !== audio)) return;
+    activeAudioCard = null;
+    audioLoading = false;
+    audio?.pause();
+    const message = error?.name === 'NotAllowedError'
+      ? '浏览器未允许这次播放，请再次点击“听读音”重试。'
+      : audio?.error?.code === 2
+        ? '录音暂时无法载入，请联网后再次点击“听读音”重试。'
+        : '这条录音暂时未能播放，请再次点击“听读音”重试。';
+    speechErrors.set(card.id, message);
+    refreshAudioAreas();
+    toast(message);
+  };
+  try {
+    const url = new URL(sample.src, document.baseURI);
+    if (url.origin !== location.origin || !['https:', 'http:', 'file:'].includes(url.protocol)) throw new Error('Audio must use this site.');
+    audio = document.createElement('audio');
+    audio.id = 'sample-audio-player';
+    audio.dataset.card = card.id;
+    audio.hidden = true;
+    audio.preload = 'none';
+    audio.src = url.href;
+    audio.playbackRate = rate === 0.75 ? 0.75 : 1;
+    audio.preservesPitch = true;
+    audio.webkitPreservesPitch = true;
+    audio.mozPreservesPitch = true;
+    activeAudio = audio;
+    activeAudioCard = card.id;
+    audioLoading = true;
+    audio.onplaying = () => {
+      if (activeAudio !== audio || token !== playbackToken) return;
+      audioLoading = false;
+      refreshAudioAreas();
+    };
+    audio.onended = () => {
+      if (activeAudio !== audio || token !== playbackToken) return;
+      activeAudioCard = null;
+      audioLoading = false;
+      refreshAudioAreas();
+    };
+    audio.onerror = reportError;
+    document.body.append(audio);
+    refreshAudioAreas();
+    // Call play directly during the click gesture; never wait for a fetch or decode first.
+    const playback = audio.play();
+    if (playback?.catch) playback.catch(reportError);
+  } catch (error) { reportError(error); }
 }
 
 function refreshVoices(complete = false) {
@@ -240,6 +329,7 @@ function speakCard(card, rate) {
   if (!voice) { toast(audioHint(card)); return; }
   speechErrors.delete(card.id);
   refreshAudioAreas();
+  stopPlayback();
   const utterance = new window.SpeechSynthesisUtterance(card.title.replace(/\s*\([^)]*\)/g, ''));
   utterance.voice = voice;
   utterance.lang = voice.lang;
@@ -277,6 +367,7 @@ function cardMarkup(card, { study = false, forceReveal = false } = {}) {
 function showCard(id) {
   const card = cards.get(id);
   if (!card) return;
+  if (currentDialogCard !== id) stopPlayback();
   currentDialogCard = id;
   openDialog('知识卡片', cardMarkup(card));
 }
@@ -348,12 +439,14 @@ function openDialog(title, body) {
 }
 
 function showSettings() {
+  stopPlayback();
   currentDialogCard = null;
   const storage = uiStorageStatus();
   openDialog('家长设置与备份', `<p class="muted small">一个孩子，一本练习册。记录保存在当前浏览器里，换设备前请导出备份。</p><section class="settings-section"><h3>每天的节奏</h3><div class="field"><label for="daily-new">每天最多学习几个新知识</label><select id="daily-new">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${state.settings.dailyNew === n ? 'selected' : ''}>${n ? `${n} 个` : '只复习，暂不学新内容'}</option>`).join('')}</select><span class="small muted">到期复习较多时会减少新内容，不为凑数量提前复习。</span></div><div class="field"><label for="default-exam-minutes">默认模拟练习时长</label><select id="default-exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟` : '不设时限'}</option>`).join('')}</select></div>${button('save-settings', '保存设置', 'primary-button')}</section><section class="settings-section"><h3>给学习记录留一份备份</h3><p class="small muted">手机与电脑各自保存进度，不自动云同步。导入会替换这台设备的记录；请先导出留存。</p><div class="row">${button('export-progress', `${icon('download')} 导出记录`, 'secondary-button', 'data-testid="export-progress"')}${button('import-progress', '导入记录', 'secondary-button', 'data-testid="import-progress"')}</div><p class="small muted spacer"><span class="status-dot"></span>${esc(storage.message)}${storage.persisted ? ' · 已获得持久保存权限' : ''}</p>${button('persist-storage', '尽量保留本机记录', 'ghost-button')}<p class="small muted">即使浏览器允许持久保存，仍建议定期导出；清理网站数据会删除本机记录。</p></section><section class="settings-section"><h3>放到手机桌面</h3><p class="small muted">${esc(pwaStatus.message || '首次打开时正在准备离线资源。')}</p>${button('install-app', '添加到桌面', 'secondary-button')}${pwaStatus.updateAvailable && !state.activeSession?.completed && state.activeSession ? '<p class="small muted">有新版可用，请先完成当前练习，再更新。</p>' : pwaStatus.updateAvailable ? button('update-app', '更新应用', 'secondary-button') : ''}</section><section class="settings-section"><h3>关于这本练习册</h3><p class="small muted">包含 ${DATA.cards.length} 个知识点和 ${DATA.questions.length} 道原创题。家庭训练内容经过AI核对，尚无人工内容验收或真实提分验证；程序运行不调用AI。模拟练习按已核对用途选题，不是官方原卷。</p><p class="small muted">教材知识是答案依据；标准释义后的教辅括注保留作对照。部分知识页小图可能是孩子见过的素材。</p>${button('official-examples', '查看4条官方参考例题', 'ghost-button')}<p class="small muted">题库版本：${esc(DATA.version)}</p></section><section class="settings-section"><h3>重新开始</h3><p class="small muted">清空会删除当前浏览器中的学习记录，不影响题库。建议先导出。</p>${button('clear-progress', '清空本机学习记录', 'danger-button', 'data-testid="clear-progress"')}</section>`);
 }
 
 function showHistory(cardId) {
+  stopPlayback();
   const card = cards.get(cardId);
   if (!card) return;
   currentDialogCard = null;
@@ -413,10 +506,11 @@ async function handleAction(target) {
   const question = questions.get(qid);
   switch (action) {
     case 'go-home': navigate('home'); break;
+    case 'go-audio': if (dialog.open) dialog.close(); currentDialogCard = null; navigate('audio'); break;
     case 'go-exam': navigate('exam'); break;
     case 'go-report': navigate('report'); break;
     case 'settings': showSettings(); break;
-    case 'close-dialog': currentDialogCard = null; dialog.close(); break;
+    case 'close-dialog': stopPlayback(); currentDialogCard = null; dialog.close(); break;
     case 'resume': navigate(state.activeSession?.completed ? 'result' : 'session'); break;
     case 'pause-session': await persist(); navigate(session?.mode === 'exam' ? 'exam' : 'home'); break;
     case 'start-daily': {
@@ -431,6 +525,7 @@ async function handleAction(target) {
     case 'reveal-card': revealed.add(target.dataset.card); if (dialog.open) showCard(target.dataset.card); else render(); break;
     case 'mark-learned': { state = markLearned(state, target.dataset.card, Date.now()); const saved = await persist(); toast(saved.durable ? '记下了，之后用作答来检验是否记住。' : '本页记下了，但未能保存；离开前请导出备份。'); if (dialog.open) dialog.close(); render(); break; }
     case 'begin-recall': {
+      stopPlayback();
       if (!session || !question) break;
       state = markLearned(state, target.dataset.card, Date.now());
       state.activeSession.studied[qid] = true;
@@ -443,7 +538,11 @@ async function handleAction(target) {
     case 'retry-voices': detectVoices(); break;
     case 'speak': {
       const card = cards.get(target.dataset.card);
-      if (card) speakCard(card, Number(target.dataset.rate));
+      if (card) {
+        const sample = samplesByCard.get(card.id);
+        if (sample) playSample(card, sample, Number(target.dataset.rate));
+        else speakCard(card, Number(target.dataset.rate));
+      }
       break;
     }
     case 'practice-category': practiceCategory = target.dataset.category; render(); break;
@@ -540,13 +639,15 @@ document.addEventListener('input', (event) => {
   }, 220);
 });
 
-window.addEventListener('hashchange', () => { route = location.hash.slice(1) || 'home'; render(); });
+window.addEventListener('hashchange', () => { stopPlayback(); route = location.hash.slice(1) || 'home'; render(); });
 window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredInstall = event; });
 window.addEventListener('pwa-status', (event) => { pwaStatus = event.detail; if (route === 'home') render(); });
 window.addEventListener('appinstalled', () => { deferredInstall = null; toast('已添加到设备，请从桌面图标打开试试。'); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') updateTimer(); });
 if (speechSupported()) window.speechSynthesis.addEventListener('voiceschanged', () => refreshVoices());
 detectVoices();
+dialog.addEventListener('close', () => { currentDialogCard = null; stopPlayback(); });
+window.addEventListener('pagehide', stopPlayback);
 dialog.addEventListener('click', (event) => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); } });
 
 try {
