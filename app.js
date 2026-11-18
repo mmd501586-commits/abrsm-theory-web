@@ -8,7 +8,7 @@ import {
   summarizeTermLevels, updateLevelMilestones,
 } from './core.js';
 import { loadState, saveState, storageStatus, requestPersistence, inspectStoredProgress } from './storage.js';
-import './pwa.js';
+import { checkForUpdate, applyUpdate } from './pwa.js';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value = '') => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -43,8 +43,13 @@ const button = (action, text, kind = 'primary-button', attrs = '') => `<button t
 let state;
 let loadSnapshot = null;
 let saveFailureStatus = null;
+let pendingClearBackups = false;
 let inspectedSources = [];
 let busy = false;
+let activeWork = null;
+let updateInProgress = false;
+let updatePhase = '';
+let updateMessage = '';
 let route = 'home';
 let search = '';
 let category = 'all';
@@ -97,15 +102,84 @@ function syncStorageBanner() {
 
 async function persist(options = {}) {
   let result;
+  // A failed explicit clear must not become an ordinary fallback save when an
+  // update retries persistence. Keep its full-clear requirement until success.
+  pendingClearBackups ||= Boolean(options.clearBackups);
   try {
     state = updateLevelMilestones(DATA, state);
-    result = await saveState(state, options);
+    result = await saveState(state, { ...options, clearBackups: pendingClearBackups });
+    if (result?.durable) pendingClearBackups = false;
     saveFailureStatus = result?.durable ? null : { reason: result?.reason || 'save-failed', message: result?.message || '当前更改只在本页暂存，尚未写入本机。下次打开可能仍是旧记录；离开前请在家长设置导出备份。' };
   } catch {
     saveFailureStatus = { reason: 'save-failed', message: '当前更改只在本页暂存，尚未写入本机。下次打开可能仍是旧记录；离开前请在家长设置导出备份。' };
   }
   syncStorageBanner();
   return result?.durable ? result : uiStorageStatus();
+}
+
+// All asynchronous state writers (clicks, timer and file import) share one gate.
+// An update claims the gate immediately, waits for the existing writer, then
+// keeps it until navigation. Nothing can alter the saved snapshot in between.
+async function runExclusive(work) {
+  if (busy || updateInProgress) return;
+  busy = true;
+  const task = Promise.resolve().then(work);
+  activeWork = task;
+  try { return await task; }
+  finally { if (activeWork === task) activeWork = null; busy = false; }
+}
+
+function syncUpdateControls() {
+  const section = $('[data-testid="app-update-section"]');
+  if (!section) return;
+  const phase = updatePhase || pwaStatus.state || 'checking';
+  section.dataset.updateState = phase;
+  section.setAttribute('aria-busy', String(updateInProgress || ['checking', 'installing'].includes(phase)));
+  $('[data-testid="app-update-status"]').textContent = updateMessage || pwaStatus.message || '正在准备离线资源…';
+  const control = $('[data-testid="app-update-button"]');
+  control.dataset.action = pwaStatus.updateAvailable ? 'update-app' : 'check-update';
+  control.textContent = updateInProgress ? (phase === 'saving' ? '正在保存进度…' : '正在切换新版…')
+    : pwaStatus.updateAvailable ? '保存进度并更新' : phase === 'checking' ? '正在检查…'
+      : phase === 'installing' ? '正在准备新版…' : '检查更新';
+  control.disabled = updateInProgress || ['checking', 'installing', 'activating'].includes(phase);
+}
+
+async function updateApp() {
+  if (updateInProgress) return;
+  updateInProgress = true;
+  updatePhase = 'saving';
+  updateMessage = '正在保存当前学习进度，请稍候。未完成的练习会接着原题继续。';
+  syncUpdateControls();
+  let switching = false;
+  try {
+    // Capture the whole task, not just saveState(): its continuation may still
+    // update the session or move from a submitted assessment to its result.
+    if (activeWork) await activeWork;
+    const saved = await persist();
+    if (!saved.durable) {
+      updatePhase = 'save-failed';
+      updateMessage = `尚未更新：${saved.message || '当前进度尚未可靠保存。'} 请先导出记录或检查本机记录，再重试。`;
+      toast('进度未能可靠保存，已停止更新。本页内容保留，请先导出或检查本机记录。');
+      return;
+    }
+    updatePhase = 'switching';
+    updateMessage = '进度已保存，正在切换新版。练习题目、已选答案与原计时截止时间都会保留。';
+    syncUpdateControls();
+    await applyUpdate();
+    const destination = state.activeSession && !state.activeSession.completed ? 'session' : route;
+    // A settings dialog may have been opened from home. Resume the saved
+    // session explicitly, without replacing it or resetting its deadline.
+    history.replaceState(null, '', `#${destination}`);
+    switching = true;
+    window.location.reload();
+  } catch (error) {
+    updatePhase = 'error';
+    updateMessage = `尚未完成更新：${error.message || '请稍后重试。'} 本页进度仍保留。`;
+    toast(updateMessage);
+  } finally {
+    // A successful switch deliberately stays locked until the document unloads.
+    if (!switching) { updateInProgress = false; syncUpdateControls(); updateTimer(); }
+  }
 }
 
 function navigate(next) {
@@ -263,7 +337,7 @@ function renderHome() {
     <div class="grid-3 topics-grid">${Object.entries(CAT).map(([id, name], i) => `<button type="button" class="topic-card" data-action="browse-category" data-category="${id}"><span class="topic-symbol">${['a tempo', '♬', '◖ ◗'][i]}</span><h3>${name}</h3><p>${['意 · 法 · 德，听懂谱面的提示', '看清记号，读懂怎样演奏', '家族、发声与高低音域'][i]}</p><span class="go">${icon('arrow')}</span></button>`).join('')}</div>
     <div class="grid-2 spacer"><section class="panel"><span class="eyebrow">YOUR PACE</span><h2>慢慢来，记得更牢</h2><p class="muted small">答错的内容会再次出现；还没到复习时间的知识，不用抢着刷。今天没有到期任务时，也可以自主学习。</p><div class="progress-track"><span style="width:${Math.min(100, (summary.learned || 0) / DATA.cards.length * 100)}%"></span></div><p class="small muted">已接触 ${summary.learned || 0} / ${DATA.cards.length} 个知识点</p></section><section class="panel"><span class="eyebrow">A LITTLE CHECK-IN</span><h2>按自己的范围，小测一次</h2><p class="muted small">选好等级和语言，独立完成后统一交卷。也可以尝试五级第六部分模拟。</p><div class="row">${button('go-quiz', `按范围测验 ${icon('arrow')}`, 'secondary-button', 'data-testid="go-quiz"')}${button('go-exam', '五级第六部分模拟', 'ghost-button')}</div></section></div>
     <div class="notice row audio-trial-banner"><p>已内置 ${recordingsByCard.size} 个术语读音，打开知识卡片即可听普通或慢速。</p><div class="row">${button('browse-category', `${icon('sound')} 去知识页听读音`, 'secondary-button', 'data-category="terms" data-testid="open-audio-terms"')}${button('go-audio', '试听3个读音样本', 'ghost-button', 'data-testid="open-audio-samples"')}</div></div>
-    <p class="footer-note">V1.1.1 · ${uiStorageStatus().durable ? '学习记录保存在这台设备' : '本次记录只在本页暂存'} · <span id="home-offline-status">${esc(offlineStatusText())}</span></p>`;
+    <p class="footer-note">V1.1.2 · ${uiStorageStatus().durable ? '学习记录保存在这台设备' : '本次记录只在本页暂存'} · <span id="home-offline-status">${esc(offlineStatusText())}</span></p>`;
 }
 
 function renderLearn() {
@@ -634,7 +708,8 @@ function showSettings() {
   stopPlayback();
   currentDialogCard = null;
   const storage = uiStorageStatus();
-  openDialog('家长设置与备份', `<p class="muted small">一个孩子，一本练习册。记录保存在当前浏览器里，换设备前请导出备份。</p><section class="settings-section"><h3>我的学习安排</h3><p class="small muted">${state.settings.studyMode === 'scoped' ? '按范围安排' : '自动安排'} · ${esc(scopeLabel(getStudyScope(state)))}</p>${button('edit-study-scope', '选择学习范围', 'secondary-button')}</section><section class="settings-section"><h3>每天的节奏</h3><div class="field"><label for="daily-new">每天最多学习几个新知识</label><select id="daily-new">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${state.settings.dailyNew === n ? 'selected' : ''}>${n ? `${n} 个` : '只复习，暂不学新内容'}</option>`).join('')}</select><span class="small muted">到期复习较多时会减少新内容，不为凑数量提前复习。</span></div><div class="field"><label for="default-exam-minutes">默认模拟练习时长</label><select id="default-exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟` : '不设时限'}</option>`).join('')}</select></div>${button('save-settings', '保存设置', 'primary-button')}</section><section class="settings-section"><h3>给学习记录留一份备份</h3><p class="small muted">手机与电脑各自保存进度，不自动云同步。导入会替换这台设备的记录；请先导出留存。</p><div class="row">${button('export-progress', `${icon('download')} 导出记录`, 'secondary-button', 'data-testid="export-progress"')}${button('import-progress', '导入记录', 'secondary-button', 'data-testid="import-progress"')}</div><div class="row spacer">${button('storage-inspect', '检查本机记录', 'secondary-button', 'data-testid="storage-inspect"')}</div><p class="small muted spacer"><span class="status-dot"></span>${esc(storage.message)}${storage.persisted ? ' · 已获得持久保存权限' : ''}</p>${button('persist-storage', '尽量保留本机记录', 'ghost-button')}<p class="small muted">即使浏览器允许持久保存，仍建议定期导出；清理网站数据会删除本机记录。</p></section><section class="settings-section"><h3>放到手机桌面</h3><p class="small muted">更新无需卸载或清理网站数据。</p><p class="small muted">${esc(pwaStatus.message || '首次打开时正在准备离线资源。')}</p>${button('install-app', '添加到桌面', 'secondary-button')}${pwaStatus.updateAvailable && !state.activeSession?.completed && state.activeSession ? '<p class="small muted">有新版可用，请先完成当前练习，再更新。</p>' : pwaStatus.updateAvailable ? button('update-app', '更新应用', 'secondary-button') : ''}</section><section class="settings-section"><h3>关于这本练习册</h3><p class="small muted">包含 ${DATA.cards.length} 个知识点和 ${DATA.questions.length} 道原创题。家庭训练内容经过AI核对，尚无人工内容验收或真实提分验证；程序运行不调用AI。模拟练习按已核对用途选题，不是官方原卷。</p><p class="small muted">教材知识是答案依据；标准释义后的教辅括注保留作对照。部分知识页小图可能是孩子见过的素材。</p>${button('official-examples', '查看4条官方参考例题', 'ghost-button')}<p class="small muted">应用版本：V1.1.1 · 题库版本：${esc(DATA.version)}</p></section><section class="settings-section"><h3>重新开始</h3><p class="small muted">清空会删除当前浏览器中的学习记录及本机历史副本，不影响题库。建议先导出。</p>${button('clear-progress', '清空本机学习记录', 'danger-button', 'data-testid="clear-progress"')}</section>`);
+  openDialog('家长设置与备份', `<p class="muted small">一个孩子，一本练习册。记录保存在当前浏览器里，换设备前请导出备份。</p><section class="settings-section app-update" data-testid="app-update-section"><h3>应用更新</h3><p class="small" data-testid="app-update-status" role="status" aria-live="polite"></p>${button('check-update', '检查更新', 'secondary-button', 'data-testid="app-update-button"')}<p class="small muted">不必做完练习。更新会先保存学习记录和当前题目，之后接着练；计时按原截止时间继续。修改每天节奏后，请先点击“保存设置”。</p></section><section class="settings-section"><h3>我的学习安排</h3><p class="small muted">${state.settings.studyMode === 'scoped' ? '按范围安排' : '自动安排'} · ${esc(scopeLabel(getStudyScope(state)))}</p>${button('edit-study-scope', '选择学习范围', 'secondary-button')}</section><section class="settings-section"><h3>每天的节奏</h3><div class="field"><label for="daily-new">每天最多学习几个新知识</label><select id="daily-new">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${state.settings.dailyNew === n ? 'selected' : ''}>${n ? `${n} 个` : '只复习，暂不学新内容'}</option>`).join('')}</select><span class="small muted">到期复习较多时会减少新内容，不为凑数量提前复习。</span></div><div class="field"><label for="default-exam-minutes">默认模拟练习时长</label><select id="default-exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟` : '不设时限'}</option>`).join('')}</select></div>${button('save-settings', '保存设置', 'primary-button')}</section><section class="settings-section"><h3>给学习记录留一份备份</h3><p class="small muted">手机与电脑各自保存进度，不自动云同步。导入会替换这台设备的记录；请先导出留存。</p><div class="row">${button('export-progress', `${icon('download')} 导出记录`, 'secondary-button', 'data-testid="export-progress"')}${button('import-progress', '导入记录', 'secondary-button', 'data-testid="import-progress"')}</div><div class="row spacer">${button('storage-inspect', '检查本机记录', 'secondary-button', 'data-testid="storage-inspect"')}</div><p class="small muted spacer"><span class="status-dot"></span>${esc(storage.message)}${storage.persisted ? ' · 已获得持久保存权限' : ''}</p>${button('persist-storage', '尽量保留本机记录', 'ghost-button')}<p class="small muted">即使浏览器允许持久保存，仍建议定期导出；清理网站数据会删除本机记录。</p></section><section class="settings-section"><h3>放到手机桌面</h3><p class="small muted">更新无需卸载或清理网站数据。</p>${button('install-app', '添加到桌面', 'secondary-button')}</section><section class="settings-section"><h3>关于这本练习册</h3><p class="small muted">包含 ${DATA.cards.length} 个知识点和 ${DATA.questions.length} 道原创题。家庭训练内容经过AI核对，尚无人工内容验收或真实提分验证；程序运行不调用AI。模拟练习按已核对用途选题，不是官方原卷。</p><p class="small muted">教材知识是答案依据；标准释义后的教辅括注保留作对照。部分知识页小图可能是孩子见过的素材。</p>${button('official-examples', '查看4条官方参考例题', 'ghost-button')}<p class="small muted">应用版本：V1.1.2 · 题库版本：${esc(DATA.version)}</p></section><section class="settings-section"><h3>重新开始</h3><p class="small muted">清空会删除当前浏览器中的学习记录及本机历史副本，不影响题库。建议先导出。</p>${button('clear-progress', '清空本机学习记录', 'danger-button', 'data-testid="clear-progress"')}</section>`);
+  syncUpdateControls();
 }
 
 function showHistory(cardId) {
@@ -687,9 +762,9 @@ function updateTimer() {
   const seconds = Math.max(0, Math.ceil((session.deadline - Date.now()) / 1000));
   const timer = $('#exam-timer');
   if (timer) { timer.textContent = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`; timer.classList.toggle('urgent', seconds < 60); }
-  if (!seconds && !timerSubmitting && !busy) {
+  if (!seconds && !timerSubmitting && !busy && !updateInProgress) {
     timerSubmitting = true;
-    submitExam(true).catch((error) => toast(`交卷未完成：${error.message}`)).finally(() => { timerSubmitting = false; });
+    runExclusive(() => submitExam(true)).catch((error) => toast(`交卷未完成：${error.message}`)).finally(() => { timerSubmitting = false; });
   }
 }
 
@@ -841,24 +916,33 @@ async function handleAction(target) {
       else openDialog('添加到手机桌面', `<p>iPhone 或 iPad：使用 Safari 打开网址，点击“分享”，选择“添加到主屏幕”。</p><p>Android：在浏览器菜单中查找“安装应用”或“添加到主屏幕”。</p><p class="notice small">${esc(pwaStatus.message || '离线功能需要浏览器支持，并先成功加载资源。')}</p><p class="small muted">只有完成添加才会出现在桌面；不同浏览器的菜单名称可能不同。</p>`);
       break;
     }
-    case 'update-app': if (!session || session.completed) window.dispatchEvent(new Event('pwa-apply-update')); else toast('请先完成当前练习，再更新。'); break;
     case 'official-examples': currentDialogCard = null; openDialog('官方参考例题', `<p class="small muted">以下4条为少量有出处的官方节选，仅作参考。它们不混入原创模拟练习，也不代表整套官方题库。</p>${(DATA.officialExamples || []).map((item, i) => `<details class="review-answer"><summary>${i + 1}. ${esc(item.prompt)}</summary><div class="answer-body">${item.promptTranslation ? `<p class="small muted">项目译文：${esc(item.promptTranslation)}</p>` : ''}${stimulusMarkup(item)}<ul>${item.options.map((option) => `<li>${esc(option.text)}</li>`).join('')}</ul><p><strong>答案：${esc(item.options.find((option) => option.id === item.answerId)?.text || '')}</strong></p><p>${esc(item.explanation)}</p>${sourcesMarkup(item.sources)}</div></details>`).join('')}`); break;
     case 'clear-progress': if (confirm('清空这台设备的全部学习记录和本机历史副本？题库会保留。此操作不能撤销，请确认已经导出需要保留的记录。')) { state = createState(DATA.version); lastResult = null; resetPracticeScope(); quizScope = null; const saved = await persist({ clearBackups: true }); dialog.close(); toast(saved.durable ? '本机记录及历史副本已清空。' : saved.message || '清空未完成，请检查本机记录。'); navigate('home'); } break;
   }
 }
 
+// Also block native hash links and dialog backdrop clicks during the checkpoint.
+document.addEventListener('click', (event) => {
+  if (updateInProgress) { event.preventDefault(); event.stopImmediatePropagation(); }
+}, true);
+
 document.addEventListener('click', async (event) => {
   const target = event.target.closest('[data-action]');
   if (!target || target.disabled) return;
   if (!state && !['storage-inspect', 'storage-export-source', 'close-dialog', 'import-progress'].includes(target.dataset.action)) return;
-  if (busy) return;
-  busy = true;
-  try { await handleAction(target); }
+  // A click requesting an update must wait for an existing save, not disappear
+  // behind busy. Checks download resources without claiming the learning gate.
+  if (target.dataset.action === 'update-app') { await updateApp(); return; }
+  if (target.dataset.action === 'check-update') {
+    updatePhase = ''; updateMessage = ''; syncUpdateControls();
+    await checkForUpdate(); return;
+  }
+  try { await runExclusive(() => handleAction(target)); }
   catch (error) { console.error(error); toast(error.message || '这一步没有完成，请再试一次。'); }
-  finally { busy = false; }
 });
 
 document.addEventListener('change', (event) => {
+  if (updateInProgress) return;
   switch (event.target.id) {
     case 'knowledge-level': level = event.target.value; visibleCards = 24; render(); break;
     case 'knowledge-language': language = event.target.value; visibleCards = 24; render(); break;
@@ -876,19 +960,25 @@ document.addEventListener('change', (event) => {
 
 $('#import-file').addEventListener('change', async (event) => {
   const file = event.target.files[0];
-  if (!file) return;
+  if (!file || updateInProgress || busy) return;
   try {
-    if (file.size > 20 * 1024 * 1024) throw new Error('文件超过20MB，请选择有效的学习记录备份。');
-    const imported = validateImport(JSON.parse(await file.text()), DATA);
-    if (!confirm(`即将用备份中的 ${imported.history.length} 条作答、${imported.exams.length} 次模拟、${imported.quizzes.length} 次按范围测验记录替换本机记录。是否继续？`)) return;
-    state = imported; lastResult = null; resetPracticeScope(); quizScope = null; const saved = await persist();
-    if (dialog.open) dialog.close();
-    toast(saved.durable ? '记录已导入并保存到本机。' : '备份已在本页打开，尚未写入本机；下次打开可能仍是旧记录。请保留备份文件。'); navigate(state.activeSession && !state.activeSession.completed ? 'session' : 'report');
+    await runExclusive(async () => {
+      if (file.size > 20 * 1024 * 1024) throw new Error('文件超过20MB，请选择有效的学习记录备份。');
+      const imported = validateImport(JSON.parse(await file.text()), DATA);
+      if (!confirm(`即将用备份中的 ${imported.history.length} 条作答、${imported.exams.length} 次模拟、${imported.quizzes.length} 次按范围测验记录替换本机记录。是否继续？`)) return;
+      // Confirmed import supersedes an earlier failed clear. Import retains
+      // existing backups; cancellation or invalid files do not cancel the clear.
+      pendingClearBackups = false;
+      state = imported; lastResult = null; resetPracticeScope(); quizScope = null; const saved = await persist();
+      if (dialog.open) dialog.close();
+      toast(saved.durable ? '记录已导入并保存到本机。' : '备份已在本页打开，尚未写入本机；下次打开可能仍是旧记录。请保留备份文件。'); navigate(state.activeSession && !state.activeSession.completed ? 'session' : 'report');
+    });
   } catch (error) { toast(`没有导入：${error.message}`); }
 });
 
 let searchTimer;
 document.addEventListener('input', (event) => {
+  if (updateInProgress) return;
   if (event.target.id !== 'knowledge-search') return;
   search = event.target.value; visibleCards = 24;
   clearTimeout(searchTimer);
@@ -908,12 +998,14 @@ window.addEventListener('pwa-status', (event) => {
   // A cache notification must not replace the controls a learner is using.
   const status = $('#home-offline-status');
   if (status) status.textContent = offlineStatusText();
+  syncUpdateControls();
 });
 window.addEventListener('appinstalled', () => { deferredInstall = null; toast('已添加到设备，请从桌面图标打开试试。'); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') updateTimer(); });
 if (speechSupported()) window.speechSynthesis.addEventListener('voiceschanged', () => refreshVoices());
 detectVoices();
 dialog.addEventListener('close', () => { currentDialogCard = null; stopPlayback(); });
+dialog.addEventListener('cancel', (event) => { if (updateInProgress) event.preventDefault(); });
 window.addEventListener('pagehide', stopPlayback);
 dialog.addEventListener('click', (event) => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); } });
 
@@ -934,4 +1026,4 @@ try {
 
 setInterval(updateTimer, 1000);
 // Read-only readiness counts; never exposes learning records or answer state.
-window.appDiagnostics = () => ({ ready: Boolean(state), appVersion: '1.1.1', version: DATA.version, cards: DATA.cards.length, questions: DATA.questions.length, candidates: DATA.questions.filter((item) => item.section6Candidate).length, storage: uiStorageStatus().mode, screen: route, activeSession: Boolean(state?.activeSession && !state.activeSession.completed), noRuntimeAI: true });
+window.appDiagnostics = () => ({ ready: Boolean(state), appVersion: '1.1.2', version: DATA.version, cards: DATA.cards.length, questions: DATA.questions.length, candidates: DATA.questions.filter((item) => item.section6Candidate).length, storage: uiStorageStatus().mode, screen: route, activeSession: Boolean(state?.activeSession && !state.activeSession.completed), noRuntimeAI: true });
