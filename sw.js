@@ -31,7 +31,9 @@ async function cachedResponse(cache, url, request) {
 
 self.addEventListener('install', event => {
   // An incomplete download fails installation; never claim partial caching is ready.
-  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(resourceURLs)));
+  // A new manifest must not refill its cache with still-fresh HTTP-cached old files.
+  const requests = resourceURLs.map(url => new Request(url, {cache: 'reload'}));
+  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(requests)));
 });
 
 self.addEventListener('activate', event => {
@@ -44,6 +46,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('message', event => {
   if (event.data?.type === 'ACTIVATE_UPDATE') self.skipWaiting();
+  if (event.data?.type === 'GET_RELEASE_VERSION') event.ports[0]?.postMessage({version:self.__PRECACHE.version});
 });
 
 self.addEventListener('fetch', event => {
