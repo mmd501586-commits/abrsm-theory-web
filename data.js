@@ -1,6 +1,6 @@
 // Generated from reviewed local knowledge. Do not edit by hand.
 export const DATA = {
-  "version": "v1-b8fe1992863a8668",
+  "version": "v1-5792fc48e81ab846",
   "counts": {
     "cards": 205,
     "questions": 487,
@@ -9725,6 +9725,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -9775,6 +9781,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -9829,6 +9841,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -9879,6 +9897,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -9933,6 +9957,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -9983,6 +10013,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10037,6 +10073,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10087,6 +10129,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10141,6 +10189,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10191,6 +10245,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10245,6 +10305,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10295,6 +10361,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10349,6 +10421,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10399,6 +10477,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10453,6 +10537,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10503,6 +10593,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10557,6 +10653,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10607,6 +10709,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10661,6 +10769,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10711,6 +10825,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10765,6 +10885,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10815,6 +10941,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10869,6 +11001,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -10919,6 +11057,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -10973,6 +11117,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11023,6 +11173,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11077,6 +11233,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11127,6 +11289,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11181,6 +11349,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11231,6 +11405,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11285,6 +11465,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11335,6 +11521,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11395,6 +11587,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11445,6 +11643,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11499,6 +11703,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11549,6 +11759,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11603,6 +11819,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11653,6 +11875,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11707,6 +11935,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11757,6 +11991,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11811,6 +12051,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11861,6 +12107,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -11915,6 +12167,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -11965,6 +12223,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12025,6 +12289,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12081,6 +12351,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12141,6 +12417,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12197,6 +12479,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12257,6 +12545,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12313,6 +12607,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12373,6 +12674,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12429,6 +12737,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12489,6 +12804,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12545,6 +12867,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12605,6 +12934,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12661,6 +12997,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12721,6 +13064,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12777,6 +13126,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12837,6 +13193,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -12887,6 +13250,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -12947,6 +13316,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13003,6 +13378,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13063,6 +13445,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13119,6 +13508,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13179,6 +13575,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13235,6 +13637,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13295,6 +13704,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13351,6 +13766,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13411,6 +13833,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13467,6 +13895,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13527,6 +13962,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13583,6 +14024,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13643,6 +14091,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13699,6 +14153,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13759,6 +14220,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13815,6 +14282,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -13875,6 +14349,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13933,6 +14413,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -13983,6 +14470,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14037,6 +14530,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14087,6 +14586,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14141,6 +14646,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14191,6 +14702,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14245,6 +14762,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14295,6 +14818,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14349,6 +14878,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14399,6 +14934,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14453,6 +14994,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14503,6 +15050,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14557,6 +15110,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14607,6 +15166,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14661,6 +15226,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14711,6 +15282,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14765,6 +15342,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14817,6 +15400,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -14867,6 +15456,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14925,6 +15520,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -14991,6 +15592,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15053,6 +15662,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15119,6 +15734,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15181,6 +15804,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15247,6 +15877,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15303,6 +15941,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15363,6 +16007,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15413,6 +16064,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15473,6 +16130,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15529,6 +16193,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15595,6 +16266,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15651,6 +16330,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15711,6 +16396,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15767,6 +16459,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15827,6 +16525,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15879,6 +16584,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -15929,6 +16640,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -15989,6 +16706,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16039,6 +16762,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16093,6 +16822,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16145,6 +16880,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16195,6 +16936,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16255,6 +17002,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16313,6 +17068,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16363,6 +17124,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16423,6 +17190,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16473,6 +17246,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16533,6 +17312,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16589,6 +17374,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16649,6 +17441,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16705,6 +17503,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16765,6 +17570,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16823,6 +17634,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16873,6 +17691,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -16939,6 +17763,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -16995,6 +17827,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17055,6 +17893,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17111,6 +17956,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17171,6 +18022,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17227,6 +18085,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17287,6 +18151,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17343,6 +18214,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17403,6 +18280,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17461,6 +18345,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17517,6 +18407,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17589,6 +18486,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17651,6 +18554,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17717,6 +18628,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17779,6 +18697,15 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -17845,6 +18772,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17909,6 +18842,15 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -17965,6 +18907,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18031,6 +18979,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18095,6 +19051,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18151,6 +19113,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18217,6 +19186,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18273,6 +19248,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18333,6 +19315,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18389,6 +19377,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18455,6 +19450,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18517,6 +19518,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18583,6 +19592,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18639,6 +19654,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18705,6 +19727,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18767,6 +19795,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18833,6 +19869,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -18895,6 +19937,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -18961,6 +20011,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19019,6 +20075,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19069,6 +20132,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19127,6 +20196,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19193,6 +20270,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19255,6 +20338,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19321,6 +20412,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        3,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19385,6 +20483,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19443,6 +20549,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19493,6 +20605,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19565,6 +20683,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19615,6 +20739,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19687,6 +20817,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19737,6 +20873,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19803,6 +20945,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19853,6 +21001,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -19925,6 +21079,14 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [
+        "French",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -19975,6 +21137,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20041,6 +21209,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20091,6 +21265,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20145,6 +21325,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20195,6 +21381,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20249,6 +21441,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20299,6 +21497,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20353,6 +21557,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20403,6 +21613,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20457,6 +21673,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20507,6 +21729,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20561,6 +21789,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20611,6 +21846,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20665,6 +21907,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20717,6 +21966,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20767,6 +22023,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20827,6 +22089,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20877,6 +22145,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French"
+      ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
         "French"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -20937,6 +22211,12 @@ export const DATA = {
       "termLanguages": [
         "French"
       ],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "French"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -20993,6 +22273,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21059,6 +22345,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21115,6 +22409,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21181,6 +22481,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21237,6 +22545,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21303,6 +22617,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21359,6 +22681,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21425,6 +22753,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21481,6 +22817,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21541,6 +22883,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21599,6 +22948,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21655,6 +23010,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21727,6 +23089,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21791,6 +23159,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -21847,6 +23223,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21911,6 +23293,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        3,
+        4,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -21983,6 +23373,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22045,6 +23442,15 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22117,6 +23523,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22179,6 +23592,15 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22245,6 +23667,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22301,6 +23729,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        3,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22367,6 +23803,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22429,6 +23871,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        3,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22501,6 +23951,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22557,6 +24013,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22623,6 +24086,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22687,6 +24156,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22743,6 +24220,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22809,6 +24292,14 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22873,6 +24364,12 @@ export const DATA = {
       "termLanguages": [
         "German"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "German"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -22923,6 +24420,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "German"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -22989,6 +24492,12 @@ export const DATA = {
       "termLanguages": [
         "German"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "German"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23039,6 +24548,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "German"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23105,6 +24620,14 @@ export const DATA = {
       "termLanguages": [
         "German"
       ],
+      "scopeLevels": [
+        1,
+        5
+      ],
+      "scopeLanguages": [
+        "German",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23155,6 +24678,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "German"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23227,6 +24756,12 @@ export const DATA = {
       "termLanguages": [
         "German"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "German"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23277,6 +24812,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "German"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23343,6 +24884,12 @@ export const DATA = {
       "termLanguages": [
         "German"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "German"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23393,6 +24940,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "German"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23459,6 +25012,12 @@ export const DATA = {
       "termLanguages": [
         "German"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "German"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23509,6 +25068,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "German"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23563,6 +25128,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23613,6 +25185,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23667,6 +25246,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23717,6 +25303,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23771,6 +25364,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23821,6 +25420,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23875,6 +25480,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -23925,6 +25536,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -23979,6 +25597,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24029,6 +25653,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -24083,6 +25714,12 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24133,6 +25770,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -24188,6 +25832,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -24258,6 +25908,15 @@ export const DATA = {
         "French",
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3,
+        4
+      ],
+      "scopeLanguages": [
+        "French",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24320,6 +25979,14 @@ export const DATA = {
         "French",
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [
+        "French",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24379,6 +26046,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French",
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [
         "French",
         "Italian"
       ],
@@ -24450,6 +26125,15 @@ export const DATA = {
         "French",
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "French",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24509,6 +26193,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French",
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [
         "French",
         "Italian"
       ],
@@ -24580,6 +26272,15 @@ export const DATA = {
         "French",
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "French",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24639,6 +26340,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French",
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [
         "French",
         "Italian"
       ],
@@ -24704,6 +26413,14 @@ export const DATA = {
         "German",
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        5
+      ],
+      "scopeLanguages": [
+        "German",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24763,6 +26480,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German",
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "German",
         "Italian"
       ],
@@ -24834,6 +26559,15 @@ export const DATA = {
         "German",
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2,
+        5
+      ],
+      "scopeLanguages": [
+        "German",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -24893,6 +26627,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German",
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        5
+      ],
+      "scopeLanguages": [
         "German",
         "Italian"
       ],
@@ -24964,6 +26706,15 @@ export const DATA = {
         "German",
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3,
+        5
+      ],
+      "scopeLanguages": [
+        "German",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25023,6 +26774,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German",
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        5
+      ],
+      "scopeLanguages": [
         "German",
         "Italian"
       ],
@@ -25091,6 +26850,15 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "German",
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2,
+        5
+      ],
+      "scopeLanguages": [
         "German",
         "Italian"
       ],
@@ -25168,6 +26936,16 @@ export const DATA = {
         "German",
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "scopeLanguages": [
+        "German",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25227,6 +27005,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French",
+        "German"
+      ],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [
         "French",
         "German"
       ],
@@ -25292,6 +27078,14 @@ export const DATA = {
         "French",
         "German"
       ],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [
+        "French",
+        "German"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25351,6 +27145,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French",
+        "German"
+      ],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [
         "French",
         "German"
       ],
@@ -25416,6 +27218,14 @@ export const DATA = {
         "French",
         "Italian"
       ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
+        "French",
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25475,6 +27285,14 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "French",
+        "Italian"
+      ],
+      "scopeLevels": [
+        2,
+        4
+      ],
+      "scopeLanguages": [
         "French",
         "Italian"
       ],
@@ -25539,6 +27357,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25598,6 +27423,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -25661,6 +27493,13 @@ export const DATA = {
       "termLanguages": [
         "Italian"
       ],
+      "scopeLevels": [
+        1,
+        3
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25720,6 +27559,13 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [
+        "Italian"
+      ],
+      "scopeLevels": [
+        1,
+        2
+      ],
+      "scopeLanguages": [
         "Italian"
       ],
       "contentReview": "ai-reviewed-not-human-verified",
@@ -25783,6 +27629,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25844,6 +27694,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25905,6 +27759,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -25966,6 +27824,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26027,6 +27889,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26088,6 +27954,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26143,6 +28013,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26198,6 +28072,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26253,6 +28131,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26308,6 +28190,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26363,6 +28249,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26418,6 +28308,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26473,6 +28367,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26528,6 +28426,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26583,6 +28485,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26637,6 +28543,8 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26692,6 +28600,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26747,6 +28659,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26802,6 +28718,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26857,6 +28777,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26912,6 +28836,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -26966,6 +28894,8 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27021,6 +28951,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27076,6 +29010,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27131,6 +29069,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        2
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27184,6 +29126,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27237,6 +29183,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27290,6 +29240,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27345,6 +29299,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27400,6 +29358,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27453,6 +29415,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27506,6 +29472,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27559,6 +29529,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27612,6 +29588,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27667,6 +29649,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27722,6 +29708,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27775,6 +29765,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27828,6 +29822,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27881,6 +29879,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27936,6 +29938,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -27991,6 +29997,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28044,6 +30054,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28097,6 +30111,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28158,6 +30176,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28219,6 +30242,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28280,6 +30308,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28341,6 +30374,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28402,6 +30440,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28463,6 +30506,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28524,6 +30572,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28585,6 +30637,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28640,6 +30696,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28695,6 +30755,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28756,6 +30820,11 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        1,
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28805,6 +30874,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28854,6 +30927,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28903,6 +30980,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -28952,6 +31033,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29001,6 +31086,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29050,6 +31139,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29099,6 +31192,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29148,6 +31245,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29197,6 +31298,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29246,6 +31351,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29295,6 +31404,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29344,6 +31457,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29393,6 +31510,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29442,6 +31563,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29491,6 +31616,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29540,6 +31669,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29589,6 +31722,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29638,6 +31775,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29687,6 +31828,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29736,6 +31881,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29785,6 +31934,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29834,6 +31987,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29883,6 +32040,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29932,6 +32093,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -29981,6 +32146,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30030,6 +32199,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30079,6 +32252,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30128,6 +32305,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30177,6 +32358,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30227,6 +32412,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30277,6 +32466,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30327,6 +32520,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30377,6 +32574,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30427,6 +32628,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30477,6 +32682,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30527,6 +32736,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30577,6 +32790,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30627,6 +32844,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30677,6 +32898,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30727,6 +32952,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30776,6 +33005,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30826,6 +33059,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30876,6 +33114,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30926,6 +33169,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -30975,6 +33222,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31024,6 +33275,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31073,6 +33328,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31122,6 +33381,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31171,6 +33434,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31220,6 +33487,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31269,6 +33540,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31318,6 +33593,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31367,6 +33646,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31416,6 +33699,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31465,6 +33752,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31514,6 +33805,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31564,6 +33859,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31614,6 +33913,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31664,6 +33967,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31714,6 +34021,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31764,6 +34075,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31813,6 +34128,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31861,6 +34180,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31909,6 +34232,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -31957,6 +34284,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32005,6 +34336,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32053,6 +34388,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32101,6 +34440,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32149,6 +34492,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32197,6 +34544,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32245,6 +34596,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32293,6 +34648,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32341,6 +34700,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32389,6 +34752,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32437,6 +34804,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32485,6 +34856,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32533,6 +34908,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32581,6 +34960,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32629,6 +35012,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32677,6 +35064,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32725,6 +35116,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32773,6 +35168,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32821,6 +35220,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32869,6 +35272,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32917,6 +35324,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -32965,6 +35376,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33013,6 +35428,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33061,6 +35480,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33109,6 +35532,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33157,6 +35584,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33205,6 +35636,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33253,6 +35688,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33301,6 +35740,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33349,6 +35792,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33397,6 +35844,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33445,6 +35896,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33493,6 +35948,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33541,6 +36000,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33589,6 +36052,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33637,6 +36104,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33685,6 +36156,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33733,6 +36208,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33781,6 +36260,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33829,6 +36312,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33877,6 +36364,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33925,6 +36416,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -33973,6 +36468,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34021,6 +36520,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34069,6 +36572,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34117,6 +36624,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34165,6 +36676,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34213,6 +36728,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34261,6 +36780,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34309,6 +36832,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34357,6 +36884,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34405,6 +36936,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34453,6 +36988,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34501,6 +37040,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34549,6 +37092,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34597,6 +37144,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34645,6 +37196,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34693,6 +37248,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34741,6 +37300,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34807,6 +37370,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34873,6 +37440,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -34939,6 +37510,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35005,6 +37580,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35071,6 +37650,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35119,6 +37702,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35167,6 +37754,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35233,6 +37824,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35284,6 +37879,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35336,6 +37936,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35386,6 +37991,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35446,6 +38055,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35497,6 +38111,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35548,6 +38166,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35599,6 +38221,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35666,6 +38292,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35714,6 +38344,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35762,6 +38396,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35810,6 +38448,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35858,6 +38500,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35906,6 +38552,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -35951,6 +38601,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36001,6 +38655,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36046,6 +38704,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36091,6 +38753,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36136,6 +38802,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36181,6 +38851,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36252,6 +38926,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36323,6 +39001,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36394,6 +39076,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     },
@@ -36473,6 +39159,10 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "zh-CN",
       "termLanguages": [],
+      "scopeLevels": [
+        4
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false
     }
@@ -36527,6 +39217,12 @@ export const DATA = {
       "questionType": "single_choice",
       "language": "en",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [
+        "Italian"
+      ],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false,
       "presentationNote": "保留英文原题、术语和四个选项；中文答案解析为本项目独立说明。"
@@ -36570,6 +39266,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "en",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false,
       "promptTranslation": "小号属于木管乐器。",
@@ -36615,6 +39316,11 @@ export const DATA = {
       "questionType": "true_false",
       "language": "en",
       "termLanguages": [],
+      "scopeLevels": [
+        4,
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false,
       "promptTranslation": "圆号使用双簧片。",
@@ -36661,6 +39367,10 @@ export const DATA = {
       "questionType": "true_false",
       "language": "en",
       "termLanguages": [],
+      "scopeLevels": [
+        5
+      ],
+      "scopeLanguages": [],
       "contentReview": "ai-reviewed-not-human-verified",
       "humanVerified": false,
       "promptTranslation": "次女高音的音域比女高音低。",

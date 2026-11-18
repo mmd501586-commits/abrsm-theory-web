@@ -3,7 +3,9 @@ import { AUDIO_RECORDINGS, AUDIO_SAMPLES } from './audio-samples.js';
 import {
   createState, dayKey, skillKey, buildDailyPlan, selectPractice, buildExam,
   shuffleOptions, recordAnswer, markLearned, summarize, finishExam,
-  validateImport, exportProgress,
+  validateImport, exportProgress, normalizeScope, getStudyScope, normalizeStudyState,
+  cardMatchesScope, questionMatchesScope, buildScopeQuiz, finishScopeQuiz,
+  summarizeTermLevels, updateLevelMilestones,
 } from './core.js';
 import { loadState, saveState, storageStatus, requestPersistence } from './storage.js';
 import './pwa.js';
@@ -52,6 +54,10 @@ let practiceCategory = 'all';
 let practiceDirection = 'all';
 let practiceCount = 10;
 let practiceMode = 'practice';
+let practiceScope = null;
+let quizScope = null;
+let quizCount = 10;
+let quizMinutes = null;
 let currentDialogCard = null;
 let revealed = new Set();
 let deferredInstall = null;
@@ -91,6 +97,7 @@ function syncStorageBanner() {
 async function persist() {
   let result;
   try {
+    state = updateLevelMilestones(DATA, state);
     result = await saveState(state);
     saveFailureMessage = result?.durable ? null : '当前更改只在本页暂存，尚未写入本机。下次打开可能仍是旧记录；离开前请在家长设置导出备份。';
   } catch {
@@ -101,7 +108,7 @@ async function persist() {
 }
 
 function navigate(next) {
-  const valid = ['home', 'learn', 'practice', 'exam', 'report', 'session', 'result', 'audio'];
+  const valid = ['home', 'learn', 'practice', 'exam', 'quiz', 'report', 'session', 'result', 'audio'];
   stopPlayback();
   next = valid.includes(next) ? next : 'home';
   if (location.hash === `#${next}`) { route = next; render(); }
@@ -110,9 +117,9 @@ function navigate(next) {
 }
 
 function renderNavigation() {
-  let selected = route === 'audio' ? 'home' : route;
-  if (['session', 'result'].includes(route)) selected = state.activeSession?.mode === 'exam' ? 'exam' : 'practice';
-  $('#navigation').innerHTML = [['home', '今天'], ['learn', '知识'], ['practice', '练习'], ['exam', '模拟'], ['report', '记录']].map(([id, title]) => `<a href="#${id}" class="nav-button ${selected === id ? 'active' : ''}" data-testid="nav-${id}" ${selected === id ? 'aria-current="page"' : ''}>${icon(id)}<span>${title}</span></a>`).join('');
+  let selected = route === 'audio' ? 'home' : route === 'quiz' ? 'exam' : route;
+  if (['session', 'result'].includes(route)) selected = isAssessment(state.activeSession) ? 'exam' : 'practice';
+  $('#navigation').innerHTML = [['home', '今天'], ['learn', '知识'], ['practice', '练习'], ['exam', '测验'], ['report', '记录']].map(([id, title]) => `<a href="#${id}" class="nav-button ${selected === id ? 'active' : ''}" data-testid="nav-${id}" ${selected === id ? 'aria-current="page"' : ''}>${icon(id)}<span>${title}</span></a>`).join('');
 }
 
 function render() {
@@ -121,15 +128,98 @@ function render() {
   syncStorageBanner();
   if (route === 'session' && !state.activeSession) route = 'home';
   if (route === 'session' && state.activeSession?.completed) route = 'result';
-  const renderers = { home: renderHome, learn: renderLearn, practice: renderPractice, exam: renderExam, report: renderReport, session: renderSession, result: renderResult, audio: renderAudio };
+  const renderers = { home: renderHome, learn: renderLearn, practice: renderPractice, exam: renderExam, quiz: renderQuiz, report: renderReport, session: renderSession, result: renderResult, audio: renderAudio };
   main.innerHTML = `<div class="page">${(renderers[route] || renderHome)()}</div>`;
   updateTimer();
+}
+
+function isAssessment(session) { return session?.mode === 'exam' || session?.mode === 'quiz'; }
+
+function sessionName(session) {
+  return session?.mode === 'quiz' ? '按范围测验' : session?.mode === 'exam' ? '五级第六部分模拟' : session?.mode === 'daily' ? '本组学习任务' : '专项练习';
+}
+
+function scopeLabel(value) {
+  const scope = normalizeScope(value);
+  const grade = scope.levelMode === 'all' ? '全部级别' : scope.levelMode === 'exact' ? `仅第 ${scope.level} 级教材内容` : `第 1–${scope.level} 级累计内容`;
+  const languages = scope.languages.length === 3 ? '全部术语语言' : scope.languages.map((name) => LANG[name]).join('、');
+  return `${CAT[scope.category] || '全部类别'} · ${grade}${['all', 'terms'].includes(scope.category) ? ` · ${languages}` : ''}`;
+}
+
+function scopeEditor(prefix, value, { includeCategory = true } = {}) {
+  const scope = normalizeScope(value);
+  return `<div class="scope-editor" data-scope-editor="${prefix}">${includeCategory ? `<div class="field"><label for="${prefix}-category">学习类别</label><select id="${prefix}-category">${[['all', '全部类别'], ...Object.entries(CAT)].map(([id, title]) => `<option value="${id}" ${scope.category === id ? 'selected' : ''}>${title}</option>`).join('')}</select></div>` : ''}<div class="scope-grade-fields"><div class="field"><label for="${prefix}-level-mode">教材范围</label><select id="${prefix}-level-mode"><option value="all" ${scope.levelMode === 'all' ? 'selected' : ''}>全部级别</option><option value="exact" ${scope.levelMode === 'exact' ? 'selected' : ''}>仅这一级的内容</option><option value="through" ${scope.levelMode === 'through' ? 'selected' : ''}>从一级累计到这一级</option></select></div><div class="field"><label for="${prefix}-level">教材级别</label><select id="${prefix}-level" ${scope.levelMode === 'all' ? 'disabled' : ''}>${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${scope.level === n ? 'selected' : ''}>第 ${n} 级</option>`).join('')}</select></div></div><fieldset class="scope-languages"><legend>术语语言，可多选</legend>${Object.entries(LANG).map(([id, title]) => `<label class="check-label" for="${prefix}-language-${id}"><input type="checkbox" id="${prefix}-language-${id}" data-scope-language="${prefix}" value="${id}" ${scope.languages.includes(id) ? 'checked' : ''}><span>${title}</span></label>`).join('')}<p class="small muted">只限制音乐术语，不会排除符号、乐器等没有术语语言的内容。</p></fieldset></div>`;
+}
+
+function readScope(prefix, fallbackCategory = 'all') {
+  const languages = [...document.querySelectorAll(`input[data-scope-language="${prefix}"]:checked`)].map((input) => input.value);
+  if (!languages.length) throw new Error('请至少选择一种术语语言。');
+  return normalizeScope({ category: $(`#${prefix}-category`)?.value || fallbackCategory,
+    levelMode: $(`#${prefix}-level-mode`).value, level: Number($(`#${prefix}-level`).value), languages });
+}
+
+function availableQuestions(scope, { direction = 'all', mistakesOnly = false } = {}) {
+  return DATA.questions.filter((question) => question.role !== 'hold' && questionMatchesScope(DATA, question, scope) &&
+    (direction === 'all' || question.category !== 'terms' || question.direction === direction) &&
+    (!mistakesOnly || (state.skills[skillKey(question)]?.lastWrongAt > 0 && state.skills[skillKey(question)].lastWrongAt >= state.skills[skillKey(question)].lastIndependentAt)));
+}
+
+function scopeAvailability(scope) {
+  const cardCount = DATA.cards.filter((card) => cardMatchesScope(card, scope)).length;
+  const count = availableQuestions(scope).length;
+  return count ? `范围内 ${cardCount} 个知识点，${count} 道可练题目。` : '这个范围暂无可练题目。请调整范围；系统不会混入其他等级或语言凑题。';
+}
+
+function updateScopePreview(prefix) {
+  const mode = $(`#${prefix}-level-mode`);
+  const grade = $(`#${prefix}-level`);
+  if (grade && mode) grade.disabled = mode.value === 'all';
+  const status = $(`#${prefix}-scope-count`);
+  if (!status) return;
+  try {
+    const scope = readScope(prefix, prefix === 'practice' ? practiceCategory : 'all');
+    if (prefix === 'practice') {
+      practiceScope = scope;
+      const count = availableQuestions(scope, { direction: practiceDirection, mistakesOnly: practiceMode === 'mistakes' }).length;
+      status.textContent = count ? `当前范围有 ${count} 道可练题目；本次最多 ${Math.min(count, practiceCount)} 题。` : '当前范围暂无符合条件的题目。可以调整范围，不会混入其他内容凑题。';
+    } else if (prefix === 'quiz') {
+      quizScope = scope;
+      const count = availableQuestions(scope).length;
+      status.textContent = count ? `当前范围有 ${count} 道可用题目，本次 ${Math.min(count, quizCount)} 题，每题 1 分。题目不足时按实际数量出题。` : '这个范围暂无可测验的题目。请调整范围；不会混入其他级别或语言凑题。';
+    } else status.textContent = scopeAvailability(scope);
+  } catch (error) { status.textContent = error.message; }
+}
+
+function resetPracticeScope() {
+  practiceScope = getStudyScope(state);
+  practiceCategory = practiceScope.category;
+}
+
+function showStudyScope() {
+  stopPlayback();
+  currentDialogCard = null;
+  const scope = normalizeScope(state.settings.studyScope);
+  openDialog('我的学习范围', `<p class="small muted">保存后，每日任务和默认专项练习、按范围测验都会采用这个范围。旧学习记录继续保留。</p>${scopeEditor('study', scope)}<p id="study-scope-count" class="notice small" role="status">${esc(scopeAvailability(scope))}</p><div class="dialog-actions">${button('save-study-scope', '保存并按此范围安排', 'primary-button', 'data-testid="save-study-scope"')}</div>`);
+}
+
+function levelMilestoneMarkup(row) {
+  const title = row.complete ? `你已掌握本应用第 ${row.level} 级全部术语${row.nextLevel ? `，可以开始第 ${row.nextLevel} 级了。` : '，继续保持！'}` : `第 ${row.level} 级曾经达标，当前还有 ${Math.max(row.needsReview || 0, row.total - row.mastered)} 个术语需要再巩固。`;
+  return `<section class="notice mastery-notice ${row.complete ? '' : 'warm'}" data-testid="level-mastery-${row.level}"><h3>${esc(title)}</h3><p>本级全部术语的两个记忆方向都要经过跨日间隔复习达标。${row.complete ? '' : '之前的达标记录仍会保留。'}第 ${row.level} 级仍在复习池中，到期后继续复习。</p>${row.complete && row.nextLevel ? button('next-level', `选择第 ${row.nextLevel} 级学习`, 'secondary-button', `data-level="${row.nextLevel}" data-testid="next-level-${row.level}"`) : ''}</section>`;
+}
+
+function masteryNotices() {
+  return summarizeTermLevels(DATA, state).filter((row) => row.complete || row.achievedAt).map(levelMilestoneMarkup).join('');
+}
+
+function termLevelsMarkup() {
+  const levels = summarizeTermLevels(DATA, state);
+  return `<section class="panel spacer"><h2>术语，一级一级掌握</h2><p class="small muted">每个词的“外文认中文”和“中文找外文”都完成 3 次独立间隔正确作答、且没有待巩固错误，才计为双向达标。同一天重复作答、只看过卡片都不算整级掌握。统计包含本级全部语言。</p><div class="mastery-levels">${levels.map((row) => `<div class="mastery-level" data-testid="level-progress-${row.level}"><div class="row"><strong>第 ${row.level} 级</strong><span class="small">${row.mastered} / ${row.total} 个术语双向达标</span></div><div class="progress-track"><span style="width:${row.mastered / Math.max(1, row.total) * 100}%"></span></div><p class="small muted">${row.complete ? '全部达标，仍继续间隔复习。' : row.achievedAt ? '曾达标；近期有需要再巩固的内容。' : '继续学习，达到标准后会提示你进入下一级。'}${row.unsupported ? ` 当前题库有 ${row.unsupported} 个术语缺少完整双向题，暂不能判为全级掌握。` : ''}${row.dueCount ? ` 到期复习 ${row.dueCount} 项。` : ''}</p></div>`).join('')}</div></section>`;
 }
 
 function resumeBlock() {
   const session = state.activeSession;
   if (!session || session.completed) return '';
-  const modeName = session.mode === 'exam' ? '模拟练习' : session.mode === 'daily' ? '今日任务' : '专项练习';
+  const modeName = sessionName(session);
   return `<div class="notice row"><span>你有一份未完成的${modeName}，进度已保留。</span>${button('resume', `继续 · 第 ${Math.min(session.index + 1, session.questionIds.length)} 题`, 'ghost-button', 'data-testid="resume-session"')}</div>`;
 }
 
@@ -137,19 +227,29 @@ function renderHome() {
   const summary = summarize(DATA, state);
   const plan = buildDailyPlan(DATA, state);
   const count = plan.items.length;
-  return `<section class="hero"><div><span class="eyebrow">${esc(todayLabel())}</span><h1>每天一小步，<br>把音乐记牢。</h1><p>先想一想，再看答案。<br>用十来分钟，让熟悉的知识更稳一点。</p><div class="row">${button('start-daily', `${count ? `开始今日 ${count} 项任务` : '看看今天学了什么'} ${icon('arrow')}`, 'primary-button', 'data-testid="start-daily"')}<span class="pill white">建议 10–15 分钟</span></div></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><div class="practice-book"><span class="book-tab"></span><small>MY MUSIC NOTEBOOK</small><strong>一小步<br>一音符</strong><div class="book-lines"></div></div></div></section>
+  const scoped = state.settings.studyMode === 'scoped';
+  const continuedNew = summary.todayAnswers > 0 && plan.newCount > 0 && !plan.dueCount && !plan.retryCount;
+  const startText = count ? (continuedNew ? `继续学习本组 ${count} 项任务` : `开始本组 ${count} 项任务`) : '看看今天学了什么';
+  const scope = getStudyScope(state);
+  const scopeHasQuestions = availableQuestions(scope).length > 0;
+  return `<section class="hero"><div><span class="eyebrow">${esc(todayLabel())} · V1.1</span><h1>每天一小步，<br>把音乐记牢。</h1><p>先想一想，再看答案。<br>用十来分钟，让熟悉的知识更稳一点。</p><p class="hero-scope">${scoped ? '按范围安排' : '自动安排'} · ${esc(scopeLabel(scope))}</p><div class="row">${button('start-daily', `${startText} ${icon('arrow')}`, 'primary-button', 'data-testid="start-daily"')}<span class="pill white">建议 10–15 分钟</span></div></div><div class="hero-art" aria-hidden="true"><span class="orbit"></span><span class="orbit two"></span><div class="practice-book"><span class="book-tab"></span><small>MY MUSIC NOTEBOOK</small><strong>一小步<br>一音符</strong><div class="book-lines"></div></div></div></section>
     ${resumeBlock()}
-    <div class="notice row audio-trial-banner"><p>已内置 ${recordingsByCard.size} 个术语读音，打开知识卡片即可听普通或慢速。</p><div class="row">${button('browse-category', `${icon('sound')} 去知识页听读音`, 'secondary-button', 'data-category="terms" data-testid="open-audio-terms"')}${button('go-audio', '试听3个读音样本', 'ghost-button', 'data-testid="open-audio-samples"')}</div></div>
-    <div class="stats-strip"><div class="stat"><strong>${plan.dueCount || 0}</strong><span>到期复习</span></div><div class="stat"><strong>${plan.newCount || 0}</strong><span>今日新知识</span></div><div class="stat"><strong>${plan.retryCount || 0}</strong><span>短时重测</span></div><div class="stat"><strong>${summary.todayAnswers || 0}</strong><span>今天已作答</span></div></div>
-    ${(plan.extensionCount || plan.remainingDueCount) ? `<p class="small muted">${plan.extensionCount ? `今天另有 ${plan.extensionCount} 项“换个角度”，练练熟悉知识的新方向。` : ''}${plan.remainingDueCount ? `本组完成后还有 ${plan.remainingDueCount} 项到期内容，可分批继续。` : ''}</p>` : ''}
+    <section class="panel study-planner spacer" aria-label="学习安排"><div class="section-title"><h2>这一次，怎样安排？</h2><span class="pill" data-testid="study-mode-label">${scoped ? '按范围安排' : '自动安排'}</span></div><div class="study-mode-grid"><button type="button" data-action="study-mode-auto" data-testid="study-mode-auto" class="study-mode ${scoped ? '' : 'selected'}" aria-pressed="${!scoped}"><strong>自动安排</strong><span>依据全部学习记录，先复习到期内容，再安排新知识。</span></button><button type="button" data-action="study-mode-scoped" data-testid="study-mode-scoped" class="study-mode ${scoped ? 'selected' : ''}" aria-pressed="${scoped}"><strong>按范围安排</strong><span>选择类别、教材级别和术语语言，在这个范围里学习。</span></button></div><div class="scope-summary"><p data-testid="study-scope-summary"><strong>${scoped ? '我的学习范围：' : '当前使用全部范围：'}</strong>${esc(scopeLabel(scope))}</p>${scoped ? button('edit-study-scope', '修改学习范围', 'ghost-button', 'data-testid="edit-study-scope"') : ''}</div><p class="small muted">${scoped ? '选择会保存在本机。浏览知识卡、临时专项练习不会悄悄改变它。' : '没有固定目标时，从这里开始。以前学过、已经掌握的内容仍按到期时间复习。'}</p>${!scopeHasQuestions ? `<p class="notice warm" data-testid="empty-study-scope">这个范围暂无可练题目。请调整范围；不会混入其他等级或语言凑题。</p>` : ''}</section>
+    <div class="stats-strip"><div class="stat"><strong>${plan.dueCount || 0}</strong><span>本组到期复习</span></div><div class="stat"><strong>${plan.newCount || 0}</strong><span>本组新知识</span></div><div class="stat"><strong>${plan.retryCount || 0}</strong><span>本组短时重测</span></div><div class="stat"><strong>${summary.todayAnswers || 0}</strong><span>今天已作答</span></div></div>
+    <p class="small muted">本组共 ${count} 项${plan.extensionCount ? `，含 ${plan.extensionCount} 项“换个角度”，检验熟悉知识的新方向` : ''}。做完后会重新安排下一组；新知识每天最多 ${state.settings.dailyNew} 个。${plan.remainingDueCount ? ` 本组完成后还有 ${plan.remainingDueCount} 项范围内到期内容，可分批继续。` : ''}</p>
+    ${continuedNew ? `<p class="notice" data-testid="next-new-group">本组已没有到期复习，可以主动继续学 ${plan.newCount} 个新知识${plan.extensionCount ? `，再检验 ${plan.extensionCount} 个新方向` : ''}。</p>` : ''}
+    ${plan.outsideDueCount ? `<section class="notice row outside-review" data-testid="outside-due-notice"><div><strong>范围外还有 ${plan.outsideDueCount} 项已学内容到期</strong><p>包括已完成级别的内容，学习记录仍保留在复习池中。</p></div>${button('review-all-due', '复习全部已学到期内容', 'secondary-button', 'data-testid="review-all-due"')}<p class="small">这次只安排到期复习和短时重测，不改变你的学习范围。</p></section>` : ''}
+    ${masteryNotices()}
     <div class="section-title"><h2>你的三本小练习册</h2><span class="eyebrow">LEARN · RECALL · REMEMBER</span></div>
     <div class="grid-3 topics-grid">${Object.entries(CAT).map(([id, name], i) => `<button type="button" class="topic-card" data-action="browse-category" data-category="${id}"><span class="topic-symbol">${['a tempo', '♬', '◖ ◗'][i]}</span><h3>${name}</h3><p>${['意 · 法 · 德，听懂谱面的提示', '看清记号，读懂怎样演奏', '家族、发声与高低音域'][i]}</p><span class="go">${icon('arrow')}</span></button>`).join('')}</div>
-    <div class="grid-2 spacer"><section class="panel"><span class="eyebrow">YOUR PACE</span><h2>慢慢来，记得更牢</h2><p class="muted small">答错的内容会再次出现；还没到复习时间的知识，不用抢着刷。今天没有到期任务时，也可以自主学习。</p><div class="progress-track"><span style="width:${Math.min(100, (summary.learned || 0) / DATA.cards.length * 100)}%"></span></div><p class="small muted">已接触 ${summary.learned || 0} / ${DATA.cards.length} 个知识点</p></section><section class="panel"><span class="eyebrow">A LITTLE CHECK-IN</span><h2>试试第六部分</h2><p class="muted small">3项术语与标记、2项装饰音、5项乐器与人声。完成后再一起查看答案。</p>${button('go-exam', `进入模拟练习 ${icon('arrow')}`, 'ghost-button')}</section></div>
-    <p class="footer-note">${uiStorageStatus().durable ? '学习记录保存在这台设备' : '本次记录只在本页暂存'} · ${pwaStatus.ready ? '离线资源已准备' : esc(pwaStatus.message || '首次使用请等待资源准备')}</p>`;
+    <div class="grid-2 spacer"><section class="panel"><span class="eyebrow">YOUR PACE</span><h2>慢慢来，记得更牢</h2><p class="muted small">答错的内容会再次出现；还没到复习时间的知识，不用抢着刷。今天没有到期任务时，也可以自主学习。</p><div class="progress-track"><span style="width:${Math.min(100, (summary.learned || 0) / DATA.cards.length * 100)}%"></span></div><p class="small muted">已接触 ${summary.learned || 0} / ${DATA.cards.length} 个知识点</p></section><section class="panel"><span class="eyebrow">A LITTLE CHECK-IN</span><h2>按自己的范围，小测一次</h2><p class="muted small">选好等级和语言，独立完成后统一交卷。也可以尝试五级第六部分模拟。</p><div class="row">${button('go-quiz', `按范围测验 ${icon('arrow')}`, 'secondary-button', 'data-testid="go-quiz"')}${button('go-exam', '五级第六部分模拟', 'ghost-button')}</div></section></div>
+    <div class="notice row audio-trial-banner"><p>已内置 ${recordingsByCard.size} 个术语读音，打开知识卡片即可听普通或慢速。</p><div class="row">${button('browse-category', `${icon('sound')} 去知识页听读音`, 'secondary-button', 'data-category="terms" data-testid="open-audio-terms"')}${button('go-audio', '试听3个读音样本', 'ghost-button', 'data-testid="open-audio-samples"')}</div></div>
+    <p class="footer-note">V1.1 · ${uiStorageStatus().durable ? '学习记录保存在这台设备' : '本次记录只在本页暂存'} · ${pwaStatus.ready ? '离线资源已准备' : esc(pwaStatus.message || '首次使用请等待资源准备')}</p>`;
 }
 
 function renderLearn() {
-  let filtered = DATA.cards.filter((card) => (category === 'all' || card.category === category) && (level === 'all' || Number(card.level) === Number(level)) && (language === 'all' || card.language === language));
+  const scope = normalizeScope({ category, levelMode: level === 'all' ? 'all' : 'exact', level: level === 'all' ? 1 : Number(level), languages: language === 'all' ? Object.keys(LANG) : [language] });
+  let filtered = DATA.cards.filter((card) => cardMatchesScope(card, scope));
   if (search.trim()) {
     const query = search.trim().toLocaleLowerCase();
     filtered = filtered.filter((card) => `${card.title} ${card.meaning} ${(card.facts || []).map((fact) => fact.value).join(' ')}`.toLocaleLowerCase().includes(query));
@@ -157,7 +257,7 @@ function renderLearn() {
   return `<div class="heading-row"><div><span class="eyebrow">KNOWLEDGE NOTEBOOK</span><h1>先认识，再记住</h1><p>翻开一张卡片，试着说出它的意思。</p></div><span class="pill">${DATA.cards.length} 个知识点</span></div>
     <div class="chip-row">${[['all', '全部'], ...Object.entries(CAT)].map(([id, title]) => `<button class="chip ${category === id ? 'selected' : ''}" data-action="filter-category" data-category="${id}" type="button">${title}</button>`).join('')}</div>
     <div class="filters"><div class="field search-field"><label for="knowledge-search">找一个知识点</label><input id="knowledge-search" data-testid="knowledge-search" type="search" placeholder="术语、中文意思或乐器名称" value="${esc(search)}"></div><div class="field"><label for="knowledge-level">教材级别</label><select id="knowledge-level"><option value="all">全部级别</option>${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${level === String(n) ? 'selected' : ''}>第 ${n} 级</option>`).join('')}</select></div><div class="field"><label for="knowledge-language">术语语言</label><select id="knowledge-language"><option value="all">全部语言</option>${Object.entries(LANG).map(([id, text]) => `<option value="${id}" ${language === id ? 'selected' : ''}>${text}</option>`).join('')}</select></div></div>
-    <p class="small muted">找到 ${filtered.length} 项 · 低级别知识也属于五级累计范围</p>
+    <div class="notice scope-summary"><p>找到 ${filtered.length} 项 · 术语语言只筛选音乐术语；低级别知识也属于五级累计范围。${search.trim() ? ' 保存学习范围只采用类别、级别和语言，不包含搜索词。' : ''}</p>${button('use-knowledge-scope', '设为我的学习范围', 'secondary-button', 'data-testid="use-knowledge-scope"')}</div>
     ${filtered.length ? `<div class="knowledge-grid">${filtered.slice(0, visibleCards).map((card) => `<button class="knowledge-item" type="button" data-action="open-card" data-card="${esc(card.id)}" data-testid="knowledge-card"><span class="pill">${esc(card.language ? LANG[card.language] || card.language : CAT[card.category])}${card.level ? ` · ${card.level}级` : ''}</span><span class="term">${esc(card.title)}</span>${card.category === 'signs' && card.images?.[0] ? `<img class="mini-image" src="${esc(card.images[0].src)}" alt="${esc(card.title)}的谱图" loading="lazy">` : ''}<span class="meta">${state.learned[card.id] ? '<i class="learned-dot"></i>已经看过' : '想一想，它是什么意思？'}</span><span class="small-arrow">↗</span></button>`).join('')}</div>${filtered.length > visibleCards ? button('more-cards', '再看一些', 'secondary-button load-more') : ''}` : empty('暂时没有找到', '试试更短的词，或切换到全部级别和语言。')}`;
 }
 
@@ -380,12 +480,23 @@ function showCard(id) {
 }
 
 function renderPractice() {
-  return `<div class="heading-row"><div><span class="eyebrow">PRACTICE AT YOUR PACE</span><h1>一次，练明白一点</h1><p>答完一题就看解释，把不确定的地方弄清楚。</p></div></div>${resumeBlock()}<div class="setup-grid spacer"><section class="panel practice-setup"><h2>${practiceMode === 'mistakes' ? '回到容易出错的地方' : '选一本练习册'}</h2><div class="choice-group">${[['all', '混合练习'], ...Object.entries(CAT)].map(([id, title]) => `<button class="chip ${practiceCategory === id ? 'selected' : ''}" type="button" data-action="practice-category" data-category="${id}">${title}</button>`).join('')}</div><div class="field"><label for="practice-direction">术语考查方向</label><select id="practice-direction"><option value="all">两种方向都练</option><option value="term_to_meaning" ${practiceDirection === 'term_to_meaning' ? 'selected' : ''}>外文 → 中文意思</option><option value="meaning_to_term" ${practiceDirection === 'meaning_to_term' ? 'selected' : ''}>中文意思 → 外文</option></select><span class="small muted">方向只影响术语；其他板块按各自考点练习。</span></div><div class="field"><label for="practice-count">这次练几题</label><select id="practice-count">${[5, 10, 15, 20].map((n) => `<option value="${n}" ${practiceCount === n ? 'selected' : ''}>${n} 题</option>`).join('')}</select></div><label class="check-label"><input id="mistakes-only" type="checkbox" ${practiceMode === 'mistakes' ? 'checked' : ''}><span>只练尚需巩固的错题</span></label>${button('start-practice', `开始练习 ${icon('arrow')}`, 'primary-button full spacer', 'data-testid="start-practice"')}</section><aside class="side-note"><span class="eyebrow">A GOOD WAY TO LEARN</span><h3>别急着猜。</h3><div class="intro-step"><span>1</span><div><strong>先认真想一想</strong><p>选项位置会变化，要判断意思。</p></div></div><div class="intro-step"><span>2</span><div><strong>看懂为什么</strong><p>答错也没关系，解释会帮你找回知识。</p></div></div><div class="intro-step"><span>3</span><div><strong>隔一会儿再试</strong><p>短时重测和隔天复习，分别记录。</p></div></div><p class="small muted">专项练习包含辅助巩固题，和模拟练习的选题用途不同。</p></aside></div>`;
+  if (!practiceScope) resetPracticeScope();
+  const scope = normalizeScope({ ...practiceScope, category: practiceCategory });
+  const available = availableQuestions(scope, { direction: practiceDirection, mistakesOnly: practiceMode === 'mistakes' }).length;
+  return `<div class="heading-row"><div><span class="eyebrow">PRACTICE AT YOUR PACE</span><h1>一次，练明白一点</h1><p>答完一题就看解释，把不确定的地方弄清楚。</p></div></div>${resumeBlock()}<div class="setup-grid spacer"><section class="panel practice-setup"><h2>${practiceMode === 'mistakes' ? '回到容易出错的地方' : '选择这次练习范围'}</h2><p class="small muted">默认采用你的学习安排。这里临时修改，不会改变首页保存的范围。</p>${button('reset-practice-scope', '重新使用首页学习范围', 'ghost-button', 'data-testid="reset-practice-scope"')}<div class="choice-group">${[['all', '混合练习'], ...Object.entries(CAT)].map(([id, title]) => `<button class="chip ${practiceCategory === id ? 'selected' : ''}" type="button" data-action="practice-category" data-category="${id}">${title}</button>`).join('')}</div>${scopeEditor('practice', scope, { includeCategory: false })}<div class="field"><label for="practice-direction">术语考查方向</label><select id="practice-direction"><option value="all">两种方向都练</option><option value="term_to_meaning" ${practiceDirection === 'term_to_meaning' ? 'selected' : ''}>外文 → 中文意思</option><option value="meaning_to_term" ${practiceDirection === 'meaning_to_term' ? 'selected' : ''}>中文意思 → 外文</option></select><span class="small muted">方向只影响术语；其他板块按各自考点练习。</span></div><div class="field"><label for="practice-count">这次练几题</label><select id="practice-count">${[5, 10, 15, 20].map((n) => `<option value="${n}" ${practiceCount === n ? 'selected' : ''}>${n} 题</option>`).join('')}</select></div><label class="check-label"><input id="mistakes-only" type="checkbox" ${practiceMode === 'mistakes' ? 'checked' : ''}><span>只练尚需巩固的错题</span></label><p id="practice-scope-count" class="notice small" role="status">${available ? `当前范围有 ${available} 道可练题目；本次最多 ${Math.min(available, practiceCount)} 题。` : '当前范围暂无符合条件的题目。可以调整范围，不会混入其他内容凑题。'}</p>${button('start-practice', `开始练习 ${icon('arrow')}`, 'primary-button full spacer', 'data-testid="start-practice"')}</section><aside class="side-note"><span class="eyebrow">A GOOD WAY TO LEARN</span><h3>别急着猜。</h3><div class="intro-step"><span>1</span><div><strong>先认真想一想</strong><p>选项位置会变化，要判断意思。</p></div></div><div class="intro-step"><span>2</span><div><strong>看懂为什么</strong><p>答错也没关系，解释会帮你找回知识。</p></div></div><div class="intro-step"><span>3</span><div><strong>隔一会儿再试</strong><p>短时重测和隔天复习，分别记录。</p></div></div><p class="small muted">专项练习包含辅助巩固题，和五级模拟的选题用途不同。</p>${button('go-quiz', '按这个范围做测验', 'secondary-button', 'data-testid="practice-go-quiz" data-use-practice="true"')}</aside></div>`;
+}
+
+function renderQuiz() {
+  if (!quizScope) quizScope = getStudyScope(state);
+  const scope = normalizeScope(quizScope);
+  const count = availableQuestions(scope).length;
+  if (quizMinutes === null) quizMinutes = Number(state.settings.examMinutes);
+  return `<div class="heading-row"><div><span class="eyebrow">YOUR OWN LITTLE QUIZ</span><h1>按范围，小测一次</h1><p>选好范围，独立作答后一起检查。</p></div><span class="pill">已完成 ${state.quizzes.length} 次</span></div>${resumeBlock()}<div class="setup-grid spacer"><section class="panel practice-setup"><h2>这次想检验什么？</h2><p class="small muted">初始采用首页学习范围。这里的临时选择不会修改日常安排。</p>${button('reset-quiz-scope', '重新使用首页学习范围', 'ghost-button', 'data-testid="reset-quiz-scope"')}${scopeEditor('quiz', scope)}<div class="scope-grade-fields"><div class="field"><label for="quiz-count">最多几题</label><select id="quiz-count">${[5, 10, 15, 20].map((n) => `<option value="${n}" ${quizCount === n ? 'selected' : ''}>${n} 题</option>`).join('')}</select></div><div class="field"><label for="quiz-minutes">测验计时</label><select id="quiz-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${quizMinutes === n ? 'selected' : ''}>${n ? `${n} 分钟` : '不设时限'}</option>`).join('')}</select></div></div><p id="quiz-scope-count" class="notice small" role="status">${count ? `当前范围有 ${count} 道可用题目，本次 ${Math.min(count, quizCount)} 题，每题 1 分。题目不足时按实际数量出题。` : '这个范围暂无可测验的题目。请调整范围；不会混入其他级别或语言凑题。'}</p>${button('start-quiz', `准备好了，开始测验 ${icon('arrow')}`, 'primary-button full spacer', 'data-testid="start-quiz"')}</section><aside class="side-note"><h3>先完成，<br>再看答案。</h3><ul><li>可以跳题、标记，交卷前随时修改答案。</li><li>离开页面后可以继续；设定的计时仍会走。</li><li>交卷后结果计入学习记录，答错内容进入复习池。</li></ul><p class="small muted">这是所选范围的家庭测验，不是某一级的完整考试，也不代表整级已经掌握。</p>${button('go-exam', '查看五级第六部分模拟', 'ghost-button')}</aside></div>`;
 }
 
 function renderExam() {
   const examCount = state.exams.length;
-  return `<div class="heading-row"><div><span class="eyebrow">SECTION SIX · A LITTLE REHEARSAL</span><h1>第六部分，小小排练</h1><p>先独立完成，再一起检查。总共 10 分。</p></div><span class="pill">已完成 ${examCount} 次</span></div>${resumeBlock()}<div class="setup-grid spacer"><section class="exam-paper"><span class="eyebrow">YOUR PRACTICE PAPER</span><h2>今天的 10 个小挑战</h2>${[['01', '术语与标记', '3 题 · 3 分'], ['02', '看谱辨认装饰音', '2 题 · 2 分'], ['03', '乐器与人声判断', '5 题 · 5 分']].map(([n, title, count]) => `<div class="exam-layout-row"><div><span>${n}</span><h3>${title}</h3></div><strong>${count}</strong></div>`).join('')}<div class="field spacer"><label for="exam-minutes">练习计时</label><select id="exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟，到时自动交卷` : '不设时限'}</option>`).join('')}</select></div>${button('start-exam', `准备好了，开始 ${icon('arrow')}`, 'primary-button full spacer', 'data-testid="start-exam"')}</section><aside class="side-note"><h3>像考试一样，<br>认真读每一道题。</h3><ul><li>可以跳过暂时不确定的题，标记后再回来。</li><li>提交前不会提示对错；提交后显示分项得分和解释。</li><li>离开页面后可继续，设定的计时仍会走。</li></ul><p class="small muted">采用已核对题库的家庭模拟练习，参照官方样卷结构；题目可能重复，不等于官方原卷或全卷成绩预测。</p></aside></div>`;
+  return `<div class="heading-row"><div><span class="eyebrow">SECTION SIX · A LITTLE REHEARSAL</span><h1>第六部分，小小排练</h1><p>五级第六部分固定结构，累计范围。总共 10 分。</p></div><span class="pill">已完成 ${examCount} 次</span></div>${resumeBlock()}<div class="notice row"><p>想只练某一级或某种语言？进入按范围测验，选择自己的范围。</p>${button('go-quiz', '按范围测验', 'secondary-button', 'data-testid="go-quiz"')}</div><div class="setup-grid spacer"><section class="exam-paper"><span class="eyebrow">YOUR PRACTICE PAPER</span><h2>今天的 10 个小挑战</h2>${[['01', '术语与标记', '3 题 · 3 分'], ['02', '看谱辨认装饰音', '2 题 · 2 分'], ['03', '乐器与人声判断', '5 题 · 5 分']].map(([n, title, count]) => `<div class="exam-layout-row"><div><span>${n}</span><h3>${title}</h3></div><strong>${count}</strong></div>`).join('')}<div class="field spacer"><label for="exam-minutes">练习计时</label><select id="exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟，到时自动交卷` : '不设时限'}</option>`).join('')}</select></div>${button('start-exam', `准备好了，开始 ${icon('arrow')}`, 'primary-button full spacer', 'data-testid="start-exam"')}</section><aside class="side-note"><h3>像考试一样，<br>认真读每一道题。</h3><ul><li>可以跳过暂时不确定的题，标记后再回来。</li><li>提交前不会提示对错；提交后显示分项得分和解释。</li><li>离开页面后可继续，设定的计时仍会走。</li></ul><p class="small muted">采用已核对题库的家庭模拟练习，参照官方样卷结构；题目可能重复，不等于官方原卷或全卷成绩预测。</p></aside></div>`;
 }
 
 function stimulusMarkup(question) {
@@ -401,7 +512,7 @@ function renderSession() {
   const qid = session.questionIds[session.index];
   const question = questions.get(qid);
   if (!question) return empty('这份练习需要重新开始', '题库版本已经变化。已保存的学习历史仍在。', button('go-home', '回到今天'));
-  const isExam = session.mode === 'exam';
+  const isExam = isAssessment(session);
   const isNew = session.kinds?.[qid] === 'new' && !session.studied?.[qid];
   const studyCard = question.knowledgeIds.map((id) => cards.get(id)).find(Boolean);
   if (!isExam && isNew && studyCard) return `<div class="session-shell"><div class="session-top">${button('pause-session', `${icon('back')} ${isExam && session.deadline ? '离开（继续计时）' : '稍后继续'}`, 'ghost-button')}<span class="pill">先学，再试</span></div><section class="question-panel">${cardMarkup(studyCard, { study: true })}</section></div>`;
@@ -410,7 +521,7 @@ function renderSession() {
   const order = session.optionOrders[qid] || question.options.map((item) => item.id);
   const options = order.map((id) => question.options.find((option) => option.id === id)).filter(Boolean);
   const letter = (i) => 'ABCD'[i] || String(i + 1);
-  return `<div class="session-shell"><div class="session-top">${button('pause-session', `${icon('back')} ${isExam && session.deadline ? '离开（继续计时）' : '稍后继续'}`, 'ghost-button')}<span>${isExam ? '模拟练习' : session.mode === 'daily' ? '今日任务' : '专项练习'} · ${session.index + 1} / ${session.questionIds.length}</span>${isExam && session.deadline ? '<span class="timer" id="exam-timer" aria-label="剩余时间"></span>' : ''}</div><div class="session-progress" aria-hidden="true"><span style="width:${(session.index + 1) / session.questionIds.length * 100}%"></span></div><section class="question-panel"><div class="question-meta"><span class="eyebrow">${esc(CAT[question.category])} · ${session.kinds?.[qid] === 'extend' ? '换个角度 · ' : ''}${question.direction === 'meaning_to_term' ? '中文找外文' : question.direction === 'performed_notation_to_ornament' ? '看谱辨认' : '想一想，再作答'}</span>${isExam ? button('flag-question', session.flagged?.[qid] ? '已标记 · 再看一遍' : '标记这题', `flag-button ${session.flagged?.[qid] ? 'on' : ''}`, 'aria-pressed="' + Boolean(session.flagged?.[qid]) + '"') : ''}</div><h1 class="question-title" data-testid="question-prompt">${esc(question.prompt)}</h1>${stimulusMarkup(question)}<div class="option-list" role="group" aria-label="答案选项">${options.map((option, i) => `<button type="button" class="answer-option ${answer === option.id ? 'selected' : ''} ${feedback && option.id === question.answerId ? 'correct' : ''} ${feedback && answer === option.id && !feedback.correct ? 'incorrect' : ''}" data-action="choose-option" data-option="${esc(option.id)}" data-testid="question-option" data-option-id="${esc(option.id)}" aria-pressed="${answer === option.id}" ${feedback ? 'disabled' : ''}><span class="option-letter">${letter(i)}</span><span>${esc(option.text)}</span>${feedback && option.id === question.answerId ? '<span class="option-result">正确答案</span>' : ''}</button>`).join('')}</div>${feedback ? `<div class="feedback ${feedback.correct ? '' : 'wrong'}" data-testid="answer-feedback" role="status"><h3>${feedback.correct ? '答对了，记住这个区别。' : '这次先把它弄明白。'}</h3><p>${esc(question.explanation)}</p><p class="small">${feedback.correct ? (session.kinds?.[qid] === 'retry' ? '这是短时重测，不会提高长期记忆阶段。' : '结果已记入本题对应的考查方向。') : '约7分钟后可再测，明天还会安排复习。'}</p>${sourcesMarkup(question.sources)}</div>` : ''}<div class="session-actions">${isExam ? `${button('previous-question', '上一题', 'secondary-button', session.index === 0 ? 'disabled' : '')}${session.index < session.questionIds.length - 1 ? button('next-question', '下一题 →', 'primary-button', 'data-testid="next-question"') : button('submit-exam', '检查并交卷', 'primary-button', 'data-testid="submit-exam"')}` : feedback ? button('next-question', session.index === session.questionIds.length - 1 ? '完成这次练习' : '下一题 →', 'primary-button', 'data-testid="next-question"') : button('submit-answer', '确认答案', 'primary-button', `data-testid="submit-answer" ${answer ? '' : 'disabled'}`)}</div></section>${isExam ? `<div class="question-jump" aria-label="跳转题目">${session.questionIds.map((id, index) => `<button type="button" class="jump-button ${session.index === index ? 'current' : ''} ${session.answers[id] ? 'answered' : ''} ${session.flagged?.[id] ? 'flagged' : ''}" data-action="jump-question" data-index="${index}" aria-label="第${index + 1}题${session.answers[id] ? '，已作答' : '，未作答'}${session.flagged?.[id] ? '，已标记' : ''}">${index + 1}</button>`).join('')}</div><div class="row" style="justify-content:center">${button('submit-exam', '提前交卷', 'ghost-button', 'data-testid="submit-exam-early"')}<span class="small muted">● 表示已标记的题</span></div>` : ''}</div>`;
+  return `<div class="session-shell"><div class="session-top">${button('pause-session', `${icon('back')} ${isExam && session.deadline ? '离开（继续计时）' : '稍后继续'}`, 'ghost-button')}<span>${esc(sessionName(session))} · ${session.index + 1} / ${session.questionIds.length}</span>${isExam && session.deadline ? '<span class="timer" id="exam-timer" aria-label="剩余时间"></span>' : ''}</div><div class="session-progress" aria-hidden="true"><span style="width:${(session.index + 1) / session.questionIds.length * 100}%"></span></div>${session.scope ? `<p class="small muted session-scope" data-testid="session-scope">本组范围：${esc(scopeLabel(session.scope))}</p>` : ''}<section class="question-panel"><div class="question-meta"><span class="eyebrow">${esc(CAT[question.category])} · ${session.kinds?.[qid] === 'extend' ? '换个角度 · ' : ''}${question.direction === 'meaning_to_term' ? '中文找外文' : question.direction === 'performed_notation_to_ornament' ? '看谱辨认' : '想一想，再作答'}</span>${isExam ? button('flag-question', session.flagged?.[qid] ? '已标记 · 再看一遍' : '标记这题', `flag-button ${session.flagged?.[qid] ? 'on' : ''}`, 'aria-pressed="' + Boolean(session.flagged?.[qid]) + '"') : ''}</div><h1 class="question-title" data-testid="question-prompt">${esc(question.prompt)}</h1>${stimulusMarkup(question)}<div class="option-list" role="group" aria-label="答案选项">${options.map((option, i) => `<button type="button" class="answer-option ${answer === option.id ? 'selected' : ''} ${feedback && option.id === question.answerId ? 'correct' : ''} ${feedback && answer === option.id && !feedback.correct ? 'incorrect' : ''}" data-action="choose-option" data-option="${esc(option.id)}" data-testid="question-option" data-option-id="${esc(option.id)}" aria-pressed="${answer === option.id}" ${feedback ? 'disabled' : ''}><span class="option-letter">${letter(i)}</span><span>${esc(option.text)}</span>${feedback && option.id === question.answerId ? '<span class="option-result">正确答案</span>' : ''}</button>`).join('')}</div>${feedback ? `<div class="feedback ${feedback.correct ? '' : 'wrong'}" data-testid="answer-feedback" role="status"><h3>${feedback.correct ? '答对了，记住这个区别。' : '这次先把它弄明白。'}</h3><p>${esc(question.explanation)}</p><p class="small">${feedback.correct ? (session.kinds?.[qid] === 'retry' ? '这是短时重测，不会提高长期记忆阶段。' : '结果已记入本题对应的考查方向。') : '约7分钟后可再测，明天还会安排复习。'}</p>${sourcesMarkup(question.sources)}</div>` : ''}<div class="session-actions">${isExam ? `${button('previous-question', '上一题', 'secondary-button', session.index === 0 ? 'disabled' : '')}${session.index < session.questionIds.length - 1 ? button('next-question', '下一题 →', 'primary-button', 'data-testid="next-question"') : button('submit-exam', '检查并交卷', 'primary-button', 'data-testid="submit-exam"')}` : feedback ? button('next-question', session.index === session.questionIds.length - 1 ? '完成这次练习' : '下一题 →', 'primary-button', 'data-testid="next-question"') : button('submit-answer', '确认答案', 'primary-button', `data-testid="submit-answer" ${answer ? '' : 'disabled'}`)}</div></section>${isExam ? `<div class="question-jump" aria-label="跳转题目">${session.questionIds.map((id, index) => `<button type="button" class="jump-button ${session.index === index ? 'current' : ''} ${session.answers[id] ? 'answered' : ''} ${session.flagged?.[id] ? 'flagged' : ''}" data-action="jump-question" data-index="${index}" aria-label="第${index + 1}题${session.answers[id] ? '，已作答' : '，未作答'}${session.flagged?.[id] ? '，已标记' : ''}">${index + 1}</button>`).join('')}</div><div class="row" style="justify-content:center">${button('submit-exam', '提前交卷', 'ghost-button', 'data-testid="submit-exam-early"')}<span class="small muted">● 表示已标记的题</span></div>` : ''}</div>`;
 }
 
 function answerReviewMarkup(question, selectedId, correct, index) {
@@ -422,22 +533,27 @@ function answerReviewMarkup(question, selectedId, correct, index) {
 
 function renderResult() {
   const session = state.activeSession;
-  const result = lastResult || (session?.mode === 'exam' ? state.exams.find((item) => item.sessionId === session.id) : null);
+  const result = lastResult || (session?.mode === 'quiz' ? state.quizzes.find((item) => item.sessionId === session.id) : session?.mode === 'exam' ? state.exams.find((item) => item.sessionId === session.id) : null);
   if (result) {
     const wrong = (result.answers || []).filter((item) => !item.correct);
-    return `<div class="session-shell"><div class="result-header"><span class="eyebrow">A LITTLE PROGRESS</span><div class="score-ring" data-testid="result-score">${result.score}<small>/ 10</small></div><h1>${result.score >= 8 ? '完成了，继续稳稳地走。' : '找到要补上的地方，就是进步。'}</h1><p class="muted">${wrong.length ? `${wrong.length}道题需要再看一看，已加入对应复习记录。` : '这份练习全部答对了。隔些时间，再检验是否还记得。'}</p></div><div class="result-grid">${Object.entries(CAT).map(([id, name]) => `<div><strong>${result.sections[id]?.score || 0}<small> / ${result.sections[id]?.total || 0}</small></strong><span>${name}</span></div>`).join('')}</div><p class="notice small">这是本次第六部分模拟练习的结果，不代表全卷分数或未见题表现。</p><div class="row spacer">${button('go-home', '回到今天')}${button('go-report', '查看学习记录', 'secondary-button')}</div><div class="section-title"><h2>答案与解释</h2><span class="small muted">点击题目展开</span></div>${result.answers.map((item, i) => answerReviewMarkup(questions.get(item.questionId), item.optionId, item.correct, i)).join('')}</div>`;
+    const quiz = result.mode === 'quiz';
+    return `<div class="session-shell" data-testid="${quiz ? 'quiz-result' : 'exam-result'}"><div class="result-header"><span class="eyebrow">${quiz ? '按范围测验' : '五级第六部分模拟'}</span><div class="score-ring" data-testid="result-score">${result.score}<small>/ ${result.total}</small></div><h1>${result.score / Math.max(1, result.total) >= .8 ? '完成了，继续稳稳地走。' : '找到要补上的地方，就是进步。'}</h1><p class="muted">${wrong.length ? `${wrong.length}道题需要再看一看，已加入对应复习记录。` : '这份练习全部答对了。隔些时间，再检验是否还记得。'}</p>${quiz ? `<p class="small muted">本次范围：${esc(scopeLabel(result.scope))}</p>` : ''}</div><div class="result-grid">${Object.entries(CAT).filter(([id]) => result.sections[id]?.total).map(([id, name]) => `<div><strong>${result.sections[id]?.score || 0}<small> / ${result.sections[id]?.total || 0}</small></strong><span>${name}</span></div>`).join('')}</div><p class="notice small">${quiz ? '这是所选范围的测验结果，不是某一级的完整考试。单次满分不等于整级掌握，后续仍会间隔复习。' : '这是本次第六部分模拟练习的结果，不代表全卷分数或未见题表现。'}</p>${masteryNotices()}<div class="row spacer">${button('go-home', '回到今天')}${button('go-report', '查看学习记录', 'secondary-button')}</div><div class="section-title"><h2>答案与解释</h2><span class="small muted">点击题目展开</span></div>${result.answers.map((item, i) => answerReviewMarkup(questions.get(item.questionId), item.optionId, item.correct, i)).join('')}</div>`;
   }
   if (!session) return empty('还没有完成的练习', '从今天的学习任务开始吧。', button('go-home', '回到今天'));
   const entries = state.history.filter((item) => item.sessionId === session.id);
   const correct = entries.filter((item) => item.correct).length;
-  return `<div class="session-shell"><section class="result-header"><span class="eyebrow">TODAY'S SMALL STEP</span><div class="score-ring" data-testid="result-score">${correct}<small>/ ${entries.length}</small></div><h1>这一小步，完成了。</h1><p class="muted">这次答了${entries.length}题。${correct === entries.length ? '保持耐心，隔一会儿再回忆。' : '答错的内容已安排复习，慢慢弄明白就好。'}</p><div class="row" style="justify-content:center">${button('go-home', '回到今天')}${button('go-report', '查看记录', 'secondary-button')}</div></section><h2>回看这次练习</h2>${entries.map((entry, i) => answerReviewMarkup(questions.get(entry.questionId), entry.optionId, entry.correct, i)).join('')}</div>`;
+  return `<div class="session-shell"><section class="result-header"><span class="eyebrow">TODAY'S SMALL STEP</span><div class="score-ring" data-testid="result-score">${correct}<small>/ ${entries.length}</small></div><h1>这一小步，完成了。</h1><p class="muted">这次答了${entries.length}题。${correct === entries.length ? '保持耐心，隔一会儿再回忆。' : '答错的内容已安排复习，慢慢弄明白就好。'}</p><div class="row" style="justify-content:center">${button('go-home', '回到今天')}${button('go-report', '查看记录', 'secondary-button')}</div></section>${masteryNotices()}<h2>回看这次练习</h2>${entries.map((entry, i) => answerReviewMarkup(questions.get(entry.questionId), entry.optionId, entry.correct, i)).join('')}</div>`;
 }
 
 function renderReport() {
   const summary = summarize(DATA, state);
   const trend = (summary.daily || []).slice(-7);
   const peak = Math.max(1, ...trend.map((entry) => entry.answers));
-  return `<div class="heading-row"><div><span class="eyebrow">THE LITTLE STEPS ADD UP</span><h1>看看走了多远</h1><p>看真实的作答记录，也留意还没检验过的方向。</p></div>${button('settings', '家长设置', 'secondary-button')}</div><div class="stats-strip"><div class="stat"><strong>${summary.learned}</strong><span>已接触知识</span></div><div class="stat"><strong>${summary.basic}</strong><span>部分方向稳定</span></div><div class="stat"><strong>${summary.longTerm}</strong><span>进入长期间隔</span></div><div class="stat"><strong>${summary.mistakes}</strong><span>待巩固考点</span></div></div><div class="grid-3 report-categories">${Object.entries(CAT).map(([id, name]) => { const value = summary.categories[id]; return `<section class="panel"><h3>${name}<span>${value.learned}<small> / ${value.total}</small></span></h3><div class="progress-track"><span style="width:${value.learned / Math.max(1, value.total) * 100}%"></span></div><p class="small muted">已接触 ${value.learned} · 到期 ${value.due} · 待巩固 ${value.mistakes}</p></section>`; }).join('')}</div><div class="grid-2 spacer"><section class="panel"><div class="section-title" style="margin-top:0"><h2>最近7天的学习节奏</h2><span class="small muted">作答次数</span></div><div class="trend">${trend.map((entry) => `<div class="trend-day"><small>${entry.answers || ''}</small><div class="trend-bar" style="height:${Math.max(3, entry.answers / peak * 85)}px" title="${esc(entry.day)}：${entry.answers}次，答对${entry.correct}次"></div><span>${esc(entry.day.slice(5))}</span></div>`).join('')}</div><p class="small muted spacer">包含独立作答和短时重测，不把刷题次数当作掌握数量。</p></section><section class="panel"><h2>术语，一级一级巩固</h2><div class="level-rows">${[1, 2, 3, 4, 5].map((n) => { const row = summary.levels[n] || { total: 0, learned: 0 }; return `<div class="level-row"><span>第 ${n} 级</span><div class="progress-track"><span style="width:${row.learned / Math.max(1, row.total) * 100}%"></span></div><small>${row.learned}/${row.total}</small></div>`; }).join('')}</div></section></div><div class="notice">“稳定”和“长期间隔”只表示已练方向的证据，不等于整个知识点的全部属性都已掌握。${button('wrong-practice', '练练待巩固考点 →', 'ghost-button')}</div><div class="grid-2 spacer"><section class="panel"><div class="section-title" style="margin-top:0"><h2>模拟练习记录</h2><span class="small muted">共 ${state.exams.length} 次</span></div>${state.exams.length ? `<ul class="history-list">${[...state.exams].sort((a, b) => b.finishedAt - a.finishedAt).slice(0, 10).map((exam) => `<li><div><strong>${esc(prettyTime(exam.finishedAt))}</strong><br>${button('view-exam', '查看这份练习', 'ghost-button', `data-exam="${esc(exam.id)}"`)}</div><span class="score">${exam.score}<small>/10</small></span></li>`).join('')}</ul>` : '<p class="muted small">还没有模拟成绩。学过一些知识后，再试一份10题练习。</p>'}</section><section class="panel"><h2>最近练过的知识</h2>${state.history.length ? `<ul class="history-list">${[...state.history].reverse().slice(0, 8).map((entry) => { const question = questions.get(entry.questionId); const card = (entry.knowledgeIds || []).map((id) => cards.get(id)).find(Boolean); return `<li><div>${button('history-card', esc(card?.title || question?.prompt || '练习记录'), 'ghost-button', `data-card="${esc(card?.id || '')}"`)}<br><span class="small muted">${esc(prettyTime(entry.at))} · ${entry.independent ? '独立作答' : entry.mode === 'retry' ? '短时重测' : '辅助练习'}</span></div><span class="${entry.correct ? 'badge-correct' : 'badge-wrong'}">${entry.correct ? '✓' : '待巩固'}</span></li>`; }).join('')}</ul>` : '<p class="small muted">开始学习后，这里会留下每一小步。</p>'}</section></div><p class="footer-note">${esc(uiStorageStatus().message || '记录只保存在当前设备')} · ${button('settings', '导出备份', 'ghost-button')}</p>`;
+  return `<div class="heading-row"><div><span class="eyebrow">THE LITTLE STEPS ADD UP</span><h1>看看走了多远</h1><p>看真实的作答记录，也留意还没检验过的方向。</p></div>${button('settings', '家长设置', 'secondary-button')}</div><div class="stats-strip"><div class="stat"><strong>${summary.learned}</strong><span>已接触知识</span></div><div class="stat"><strong>${summary.basic}</strong><span>部分方向稳定</span></div><div class="stat"><strong>${summary.longTerm}</strong><span>进入长期间隔</span></div><div class="stat"><strong>${summary.mistakes}</strong><span>待巩固考点</span></div></div><div class="grid-3 report-categories">${Object.entries(CAT).map(([id, name]) => { const value = summary.categories[id]; return `<section class="panel"><h3>${name}<span>${value.learned}<small> / ${value.total}</small></span></h3><div class="progress-track"><span style="width:${value.learned / Math.max(1, value.total) * 100}%"></span></div><p class="small muted">已接触 ${value.learned} · 到期 ${value.due} · 待巩固 ${value.mistakes}</p></section>`; }).join('')}</div><div class="grid-2 spacer"><section class="panel"><div class="section-title" style="margin-top:0"><h2>最近7天的学习节奏</h2><span class="small muted">作答次数</span></div><div class="trend">${trend.map((entry) => `<div class="trend-day"><small>${entry.answers || ''}</small><div class="trend-bar" style="height:${Math.max(3, entry.answers / peak * 85)}px" title="${esc(entry.day)}：${entry.answers}次，答对${entry.correct}次"></div><span>${esc(entry.day.slice(5))}</span></div>`).join('')}</div><p class="small muted spacer">包含独立作答和短时重测，不把刷题次数当作掌握数量。</p></section><section class="panel"><h2>术语，一级一级接触</h2><p class="small muted">这里统计看过或练过的术语；双向掌握进度见下方。</p><div class="level-rows">${[1, 2, 3, 4, 5].map((n) => { const row = summary.levels[n] || { total: 0, learned: 0 }; return `<div class="level-row"><span>第 ${n} 级</span><div class="progress-track"><span style="width:${row.learned / Math.max(1, row.total) * 100}%"></span></div><small>${row.learned}/${row.total}</small></div>`; }).join('')}</div></section></div><div class="notice">上方“稳定”和“长期间隔”按全部已收录方向、属性和关系统计；下方“术语双向达标”只检验词与释义的两个方向，口径不同。一次答对不能算整级掌握。${button('wrong-practice', '练练待巩固考点 →', 'ghost-button')}</div><div class="grid-2 spacer"><section class="panel"><div class="section-title" style="margin-top:0"><h2>模拟练习记录</h2><span class="small muted">共 ${state.exams.length} 次</span></div>${state.exams.length ? `<ul class="history-list">${[...state.exams].sort((a, b) => b.finishedAt - a.finishedAt).slice(0, 10).map((exam) => `<li><div><strong>${esc(prettyTime(exam.finishedAt))}</strong><br>${button('view-exam', '查看这份练习', 'ghost-button', `data-exam="${esc(exam.id)}"`)}</div><span class="score">${exam.score}<small>/10</small></span></li>`).join('')}</ul>` : '<p class="muted small">还没有模拟成绩。学过一些知识后，再试一份10题练习。</p>'}</section><section class="panel"><h2>最近练过的知识</h2>${state.history.length ? `<ul class="history-list">${[...state.history].reverse().slice(0, 8).map((entry) => { const question = questions.get(entry.questionId); const card = (entry.knowledgeIds || []).map((id) => cards.get(id)).find(Boolean); return `<li><div>${button('history-card', esc(card?.title || question?.prompt || '练习记录'), 'ghost-button', `data-card="${esc(card?.id || '')}"`)}<br><span class="small muted">${esc(prettyTime(entry.at))} · ${entry.independent ? '独立作答' : entry.mode === 'retry' ? '短时重测' : '辅助练习'}</span></div><span class="${entry.correct ? 'badge-correct' : 'badge-wrong'}">${entry.correct ? '✓' : '待巩固'}</span></li>`; }).join('')}</ul>` : '<p class="small muted">开始学习后，这里会留下每一小步。</p>'}</section></div>${termLevelsMarkup()}${masteryNotices()}${quizHistoryMarkup()}<p class="footer-note">${esc(uiStorageStatus().message || '记录只保存在当前设备')} · ${button('settings', '导出备份', 'ghost-button')}</p>`;
+}
+
+function quizHistoryMarkup() {
+  return `<section class="panel spacer" data-testid="quiz-history"><div class="section-title" style="margin-top:0"><h2>按范围测验记录</h2><span class="small muted">共 ${state.quizzes.length} 次</span></div>${state.quizzes.length ? `<ul class="history-list">${[...state.quizzes].sort((a, b) => b.finishedAt - a.finishedAt).slice(0, 10).map((quiz) => `<li><div><strong>${esc(prettyTime(quiz.finishedAt))}</strong><p class="small muted">${esc(scopeLabel(quiz.scope))}</p>${button('view-quiz', '查看这份测验', 'ghost-button', `data-quiz="${esc(quiz.id)}"`)}</div><span class="score">${quiz.score}<small>/${quiz.total}</small></span></li>`).join('')}</ul>` : '<p class="small muted">还没有按范围测验记录。选择等级和语言后，可以做一份小测验。</p>'}</section>`;
 }
 
 function openDialog(title, body) {
@@ -449,7 +565,7 @@ function showSettings() {
   stopPlayback();
   currentDialogCard = null;
   const storage = uiStorageStatus();
-  openDialog('家长设置与备份', `<p class="muted small">一个孩子，一本练习册。记录保存在当前浏览器里，换设备前请导出备份。</p><section class="settings-section"><h3>每天的节奏</h3><div class="field"><label for="daily-new">每天最多学习几个新知识</label><select id="daily-new">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${state.settings.dailyNew === n ? 'selected' : ''}>${n ? `${n} 个` : '只复习，暂不学新内容'}</option>`).join('')}</select><span class="small muted">到期复习较多时会减少新内容，不为凑数量提前复习。</span></div><div class="field"><label for="default-exam-minutes">默认模拟练习时长</label><select id="default-exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟` : '不设时限'}</option>`).join('')}</select></div>${button('save-settings', '保存设置', 'primary-button')}</section><section class="settings-section"><h3>给学习记录留一份备份</h3><p class="small muted">手机与电脑各自保存进度，不自动云同步。导入会替换这台设备的记录；请先导出留存。</p><div class="row">${button('export-progress', `${icon('download')} 导出记录`, 'secondary-button', 'data-testid="export-progress"')}${button('import-progress', '导入记录', 'secondary-button', 'data-testid="import-progress"')}</div><p class="small muted spacer"><span class="status-dot"></span>${esc(storage.message)}${storage.persisted ? ' · 已获得持久保存权限' : ''}</p>${button('persist-storage', '尽量保留本机记录', 'ghost-button')}<p class="small muted">即使浏览器允许持久保存，仍建议定期导出；清理网站数据会删除本机记录。</p></section><section class="settings-section"><h3>放到手机桌面</h3><p class="small muted">${esc(pwaStatus.message || '首次打开时正在准备离线资源。')}</p>${button('install-app', '添加到桌面', 'secondary-button')}${pwaStatus.updateAvailable && !state.activeSession?.completed && state.activeSession ? '<p class="small muted">有新版可用，请先完成当前练习，再更新。</p>' : pwaStatus.updateAvailable ? button('update-app', '更新应用', 'secondary-button') : ''}</section><section class="settings-section"><h3>关于这本练习册</h3><p class="small muted">包含 ${DATA.cards.length} 个知识点和 ${DATA.questions.length} 道原创题。家庭训练内容经过AI核对，尚无人工内容验收或真实提分验证；程序运行不调用AI。模拟练习按已核对用途选题，不是官方原卷。</p><p class="small muted">教材知识是答案依据；标准释义后的教辅括注保留作对照。部分知识页小图可能是孩子见过的素材。</p>${button('official-examples', '查看4条官方参考例题', 'ghost-button')}<p class="small muted">题库版本：${esc(DATA.version)}</p></section><section class="settings-section"><h3>重新开始</h3><p class="small muted">清空会删除当前浏览器中的学习记录，不影响题库。建议先导出。</p>${button('clear-progress', '清空本机学习记录', 'danger-button', 'data-testid="clear-progress"')}</section>`);
+  openDialog('家长设置与备份', `<p class="muted small">一个孩子，一本练习册。记录保存在当前浏览器里，换设备前请导出备份。</p><section class="settings-section"><h3>我的学习安排</h3><p class="small muted">${state.settings.studyMode === 'scoped' ? '按范围安排' : '自动安排'} · ${esc(scopeLabel(getStudyScope(state)))}</p>${button('edit-study-scope', '选择学习范围', 'secondary-button')}</section><section class="settings-section"><h3>每天的节奏</h3><div class="field"><label for="daily-new">每天最多学习几个新知识</label><select id="daily-new">${[0, 1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${state.settings.dailyNew === n ? 'selected' : ''}>${n ? `${n} 个` : '只复习，暂不学新内容'}</option>`).join('')}</select><span class="small muted">到期复习较多时会减少新内容，不为凑数量提前复习。</span></div><div class="field"><label for="default-exam-minutes">默认模拟练习时长</label><select id="default-exam-minutes">${[0, 5, 10, 15, 20].map((n) => `<option value="${n}" ${Number(state.settings.examMinutes) === n ? 'selected' : ''}>${n ? `${n} 分钟` : '不设时限'}</option>`).join('')}</select></div>${button('save-settings', '保存设置', 'primary-button')}</section><section class="settings-section"><h3>给学习记录留一份备份</h3><p class="small muted">手机与电脑各自保存进度，不自动云同步。导入会替换这台设备的记录；请先导出留存。</p><div class="row">${button('export-progress', `${icon('download')} 导出记录`, 'secondary-button', 'data-testid="export-progress"')}${button('import-progress', '导入记录', 'secondary-button', 'data-testid="import-progress"')}</div><p class="small muted spacer"><span class="status-dot"></span>${esc(storage.message)}${storage.persisted ? ' · 已获得持久保存权限' : ''}</p>${button('persist-storage', '尽量保留本机记录', 'ghost-button')}<p class="small muted">即使浏览器允许持久保存，仍建议定期导出；清理网站数据会删除本机记录。</p></section><section class="settings-section"><h3>放到手机桌面</h3><p class="small muted">${esc(pwaStatus.message || '首次打开时正在准备离线资源。')}</p>${button('install-app', '添加到桌面', 'secondary-button')}${pwaStatus.updateAvailable && !state.activeSession?.completed && state.activeSession ? '<p class="small muted">有新版可用，请先完成当前练习，再更新。</p>' : pwaStatus.updateAvailable ? button('update-app', '更新应用', 'secondary-button') : ''}</section><section class="settings-section"><h3>关于这本练习册</h3><p class="small muted">包含 ${DATA.cards.length} 个知识点和 ${DATA.questions.length} 道原创题。家庭训练内容经过AI核对，尚无人工内容验收或真实提分验证；程序运行不调用AI。模拟练习按已核对用途选题，不是官方原卷。</p><p class="small muted">教材知识是答案依据；标准释义后的教辅括注保留作对照。部分知识页小图可能是孩子见过的素材。</p>${button('official-examples', '查看4条官方参考例题', 'ghost-button')}<p class="small muted">应用版本：V1.1 · 题库版本：${esc(DATA.version)}</p></section><section class="settings-section"><h3>重新开始</h3><p class="small muted">清空会删除当前浏览器中的学习记录，不影响题库。建议先导出。</p>${button('clear-progress', '清空本机学习记录', 'danger-button', 'data-testid="clear-progress"')}</section>`);
 }
 
 function showHistory(cardId) {
@@ -461,7 +577,7 @@ function showHistory(cardId) {
   openDialog(`${card.title} · 学习历史`, `<p class="small muted">只记录实际做过的考查方向；不能从一次答对推断全部属性已掌握。</p>${history.length ? `<ul class="history-list">${[...history].reverse().map((entry) => `<li><div><strong>${esc(prettyTime(entry.at))}</strong><p class="small muted">${esc(questions.get(entry.questionId)?.prompt || entry.questionId)}<br>${entry.independent ? '独立间隔作答' : entry.mode === 'retry' ? '短时重测，不升级阶段' : '辅助练习'} · 阶段 ${entry.stageAfter || 0}</p></div><span class="${entry.correct ? 'badge-correct' : 'badge-wrong'}">${entry.correct ? '答对' : '待巩固'}</span></li>`).join('')}</ul>` : '<p>还没有作答记录。</p>'}${button('open-card', '查看知识卡', 'primary-button', `data-card="${esc(cardId)}"`)}`);
 }
 
-async function startSession(ids, mode, kinds = {}, minutes = 0) {
+async function startSession(ids, mode, kinds = {}, minutes = 0, scope = null) {
   if (!ids.length) { toast(mode === 'daily' ? '现在没有到期任务，可以先看看知识卡。' : '当前条件下没有可练习的题目，请换个范围。'); return; }
   if (state.activeSession && !state.activeSession.completed && !confirm('还有一份未完成的练习。开始新练习会替换它，已完成的作答记录保留。确定继续吗？')) return;
   const now = Date.now();
@@ -472,6 +588,7 @@ async function startSession(ids, mode, kinds = {}, minutes = 0) {
     mode, questionIds, index: 0, answers: {}, optionOrders: Object.fromEntries(questionIds.map((id) => [id, shuffleOptions(questions.get(id)).map((option) => option.id)])),
     startedAt: now, deadline: minutes ? now + minutes * 60000 : null,
     kinds, studied: {}, flagged: {}, feedback: null, completed: false,
+    ...(scope ? { scope: normalizeScope(scope) } : {}),
   };
   lastResult = null;
   await persist();
@@ -481,10 +598,11 @@ async function startSession(ids, mode, kinds = {}, minutes = 0) {
 
 async function submitExam(automatic = false) {
   const session = state.activeSession;
-  if (!session || session.mode !== 'exam' || session.completed) return;
+  if (!session || !isAssessment(session) || session.completed) return;
   const unanswered = session.questionIds.filter((id) => !session.answers[id]).length;
   if (!automatic && !confirm(unanswered ? `还有 ${unanswered} 题未作答，将按未得分处理。确定交卷吗？` : '确认交卷并查看答案吗？')) return;
-  const completed = finishExam(state, session.questionIds.map((id) => questions.get(id)), session.answers, { now: Date.now(), startedAt: session.startedAt, sessionId: session.id });
+  const finish = session.mode === 'quiz' ? finishScopeQuiz : finishExam;
+  const completed = finish(state, session.questionIds.map((id) => questions.get(id)), session.answers, { now: Date.now(), startedAt: session.startedAt, sessionId: session.id, ...(session.mode === 'quiz' ? { scope: session.scope } : {}) });
   state = completed.state;
   state.activeSession = { ...session, completed: true };
   lastResult = completed.result;
@@ -496,7 +614,7 @@ async function submitExam(automatic = false) {
 
 function updateTimer() {
   const session = state?.activeSession;
-  if (!session || session.mode !== 'exam' || session.completed || !session.deadline) return;
+  if (!session || !isAssessment(session) || session.completed || !session.deadline) return;
   const seconds = Math.max(0, Math.ceil((session.deadline - Date.now()) / 1000));
   const timer = $('#exam-timer');
   if (timer) { timer.textContent = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`; timer.classList.toggle('urgent', seconds < 60); }
@@ -515,15 +633,50 @@ async function handleAction(target) {
     case 'go-home': navigate('home'); break;
     case 'go-audio': if (dialog.open) dialog.close(); currentDialogCard = null; navigate('audio'); break;
     case 'go-exam': navigate('exam'); break;
+    case 'go-quiz': {
+      quizScope = target.dataset.usePractice ? readScope('practice', practiceCategory) : getStudyScope(state);
+      navigate('quiz'); break;
+    }
     case 'go-report': navigate('report'); break;
+    case 'study-mode-auto': {
+      state.settings.studyMode = 'auto';
+      const saved = await persist(); resetPracticeScope(); quizScope = null;
+      toast(saved.durable ? '已切换为自动安排，使用全部学习记录。' : '本页已切换，尚未保存到本机。'); render(); break;
+    }
+    case 'study-mode-scoped':
+    case 'edit-study-scope': showStudyScope(); break;
+    case 'save-study-scope': {
+      state.settings.studyScope = readScope('study');
+      state.settings.studyMode = 'scoped';
+      const saved = await persist(); resetPracticeScope(); quizScope = null; dialog.close();
+      toast(saved.durable ? '学习范围已保存；已有学习记录继续保留。' : '范围仅在本页生效，尚未保存到本机。'); navigate('home'); break;
+    }
+    case 'use-knowledge-scope': {
+      state.settings.studyScope = normalizeScope({ category, levelMode: level === 'all' ? 'all' : 'exact', level: level === 'all' ? 1 : Number(level), languages: language === 'all' ? Object.keys(LANG) : [language] });
+      state.settings.studyMode = 'scoped';
+      const saved = await persist(); resetPracticeScope(); quizScope = null;
+      toast(saved.durable ? '已将类别、级别和语言设为学习范围。' : '范围仅在本页生效，尚未保存到本机。'); navigate('home'); break;
+    }
+    case 'next-level': {
+      const nextLevel = Number(target.dataset.level);
+      if (!Number.isInteger(nextLevel) || nextLevel < 2 || nextLevel > 5) break;
+      state.settings.studyScope = normalizeScope({ category: 'terms', levelMode: 'exact', level: nextLevel, languages: Object.keys(LANG) });
+      state.settings.studyMode = 'scoped';
+      const saved = await persist(); resetPracticeScope(); quizScope = null;
+      toast(saved.durable ? `已选择第 ${nextLevel} 级；之前的术语仍会到期复习。` : '本页已选择下一级，尚未保存到本机。'); navigate('home'); break;
+    }
     case 'settings': showSettings(); break;
     case 'close-dialog': stopPlayback(); currentDialogCard = null; dialog.close(); break;
     case 'resume': navigate(state.activeSession?.completed ? 'result' : 'session'); break;
-    case 'pause-session': await persist(); navigate(session?.mode === 'exam' ? 'exam' : 'home'); break;
+    case 'pause-session': await persist(); navigate(session?.mode === 'quiz' ? 'quiz' : session?.mode === 'exam' ? 'exam' : 'home'); break;
     case 'start-daily': {
       const plan = buildDailyPlan(DATA, state);
       if (!plan.items.length) { navigate('report'); break; }
-      await startSession(plan.items.map((item) => item.questionId), 'daily', Object.fromEntries(plan.items.map((item) => [item.questionId, item.kind]))); break;
+      await startSession(plan.items.map((item) => item.questionId), 'daily', Object.fromEntries(plan.items.map((item) => [item.questionId, item.kind])), 0, plan.scope); break;
+    }
+    case 'review-all-due': {
+      const plan = buildDailyPlan(DATA, state, Date.now(), { mode: 'auto', reviewOnly: true });
+      await startSession(plan.items.map((item) => item.questionId), 'daily', Object.fromEntries(plan.items.map((item) => [item.questionId, item.kind])), 0, plan.scope); break;
     }
     case 'browse-category': category = target.dataset.category; search = ''; level = language = 'all'; visibleCards = 24; navigate('learn'); break;
     case 'filter-category': category = target.dataset.category; visibleCards = 24; render(); break;
@@ -539,8 +692,11 @@ async function handleAction(target) {
       await persist(); render(); break;
     }
     case 'practice-card': {
-      const matching = DATA.questions.filter((item) => item.knowledgeIds.includes(target.dataset.card) && item.role !== 'hold').map((item) => item.id);
-      await startSession(matching.slice(0, 5), 'practice'); break;
+      const card = cards.get(target.dataset.card);
+      if (!card) break;
+      const scope = normalizeScope({ category: card.category, levelMode: card.level ? 'exact' : 'all', level: card.level || 1, languages: card.language ? [card.language] : Object.keys(LANG) });
+      const matching = DATA.questions.filter((item) => item.knowledgeIds.includes(card.id) && item.role !== 'hold' && questionMatchesScope(DATA, item, scope)).map((item) => item.id);
+      await startSession(matching.slice(0, 5), 'practice', {}, 0, scope); break;
     }
     case 'retry-voices': detectVoices(); break;
     case 'speak': {
@@ -552,34 +708,44 @@ async function handleAction(target) {
       }
       break;
     }
-    case 'practice-category': practiceCategory = target.dataset.category; render(); break;
-    case 'wrong-practice': practiceMode = 'mistakes'; practiceCategory = 'all'; practiceDirection = 'all'; navigate('practice'); break;
-    case 'start-practice': await startSession(selectPractice(DATA, state, { category: practiceCategory, direction: practiceDirection, count: practiceCount, mode: practiceMode }), 'practice'); break;
+    case 'practice-category': practiceScope = readScope('practice', practiceCategory); practiceCategory = target.dataset.category; render(); break;
+    case 'reset-practice-scope': resetPracticeScope(); render(); break;
+    case 'reset-quiz-scope': quizScope = getStudyScope(state); render(); break;
+    case 'wrong-practice': practiceMode = 'mistakes'; resetPracticeScope(); practiceDirection = 'all'; navigate('practice'); break;
+    case 'start-practice': {
+      practiceScope = readScope('practice', practiceCategory);
+      await startSession(selectPractice(DATA, state, { category: practiceCategory, direction: practiceDirection, count: practiceCount, mode: practiceMode, scope: practiceScope }), 'practice', {}, 0, practiceScope); break;
+    }
+    case 'start-quiz': {
+      quizScope = readScope('quiz'); quizCount = Number($('#quiz-count').value); quizMinutes = Number($('#quiz-minutes').value);
+      await startSession(buildScopeQuiz(DATA, state, { scope: quizScope, count: quizCount }), 'quiz', {}, quizMinutes, quizScope); break;
+    }
     case 'start-exam': state.settings.examMinutes = Number($('#exam-minutes').value); await startSession(buildExam(DATA, state), 'exam', {}, state.settings.examMinutes); break;
     case 'choose-option': {
-      if (!session || !question || session.completed || (session.mode !== 'exam' && session.feedback?.questionId === qid)) break;
+      if (!session || !question || session.completed || (!isAssessment(session) && session.feedback?.questionId === qid)) break;
       if (!question.options.some((option) => option.id === target.dataset.option)) break;
       session.answers[qid] = target.dataset.option; await persist(); render(); break;
     }
     case 'submit-answer': {
-      if (!session || !question || session.mode === 'exam' || session.feedback?.questionId === qid || !session.answers[qid]) break;
+      if (!session || !question || isAssessment(session) || session.feedback?.questionId === qid || !session.answers[qid]) break;
       const selected = session.answers[qid];
       state = recordAnswer(state, question, selected, { now: Date.now(), mode: session.kinds?.[qid] || 'practice', sessionId: session.id });
       state.activeSession.feedback = { questionId: qid, correct: selected === question.answerId };
       await persist(); render(); break;
     }
     case 'next-question': {
-      if (!session || session.completed || (session.mode !== 'exam' && session.feedback?.questionId !== qid)) break;
+      if (!session || session.completed || (!isAssessment(session) && session.feedback?.questionId !== qid)) break;
       if (session.index < session.questionIds.length - 1) { session.index++; session.feedback = null; await persist(); render(); window.scrollTo({ top: 0, behavior: 'instant' }); }
-      else if (session.mode !== 'exam') { session.completed = true; await persist(); navigate('result'); }
+      else if (!isAssessment(session)) { session.completed = true; await persist(); navigate('result'); }
       break;
     }
-    case 'previous-question': if (session?.mode === 'exam' && session.index > 0) { session.index--; await persist(); render(); } break;
-    case 'jump-question': if (session?.mode === 'exam') { const index = Number(target.dataset.index); if (Number.isInteger(index) && index >= 0 && index < session.questionIds.length) { session.index = index; await persist(); render(); } } break;
-    case 'flag-question': if (session?.mode === 'exam') { session.flagged[qid] = !session.flagged[qid]; await persist(); render(); } break;
+    case 'previous-question': if (isAssessment(session) && session.index > 0) { session.index--; await persist(); render(); } break;
+    case 'jump-question': if (isAssessment(session)) { const index = Number(target.dataset.index); if (Number.isInteger(index) && index >= 0 && index < session.questionIds.length) { session.index = index; await persist(); render(); } } break;
+    case 'flag-question': if (isAssessment(session)) { session.flagged[qid] = !session.flagged[qid]; await persist(); render(); } break;
     case 'submit-exam': await submitExam(); break;
     case 'history-card': showHistory(target.dataset.card); break;
     case 'view-exam': lastResult = state.exams.find((item) => item.id === target.dataset.exam); navigate('result'); break;
+    case 'view-quiz': lastResult = state.quizzes.find((item) => item.id === target.dataset.quiz); navigate('result'); break;
     case 'save-settings': { state.settings.dailyNew = Number($('#daily-new').value); state.settings.examMinutes = Number($('#default-exam-minutes').value); const saved = await persist(); toast(saved.durable ? '设置已保存到本机。' : '设置仅在本页生效，尚未写入本机；下次打开可能仍是旧设置。'); dialog.close(); render(); break; }
     case 'export-progress': {
       const blob = new Blob([JSON.stringify(exportProgress(state), null, 2)], { type: 'application/json;charset=utf-8' });
@@ -595,7 +761,7 @@ async function handleAction(target) {
     }
     case 'update-app': if (!session || session.completed) window.dispatchEvent(new Event('pwa-apply-update')); else toast('请先完成当前练习，再更新。'); break;
     case 'official-examples': currentDialogCard = null; openDialog('官方参考例题', `<p class="small muted">以下4条为少量有出处的官方节选，仅作参考。它们不混入原创模拟练习，也不代表整套官方题库。</p>${(DATA.officialExamples || []).map((item, i) => `<details class="review-answer"><summary>${i + 1}. ${esc(item.prompt)}</summary><div class="answer-body">${item.promptTranslation ? `<p class="small muted">项目译文：${esc(item.promptTranslation)}</p>` : ''}${stimulusMarkup(item)}<ul>${item.options.map((option) => `<li>${esc(option.text)}</li>`).join('')}</ul><p><strong>答案：${esc(item.options.find((option) => option.id === item.answerId)?.text || '')}</strong></p><p>${esc(item.explanation)}</p>${sourcesMarkup(item.sources)}</div></details>`).join('')}`); break;
-    case 'clear-progress': if (confirm('清空这台设备的全部学习记录？题库会保留。此操作不能撤销，请确认已经导出需要保留的记录。')) { state = createState(DATA.version); lastResult = null; const saved = await persist(); dialog.close(); toast(saved.durable ? '本机记录已清空。' : '仅清空了当前页面，未能写入本机；下次打开可能仍会出现旧记录。'); navigate('home'); } break;
+    case 'clear-progress': if (confirm('清空这台设备的全部学习记录？题库会保留。此操作不能撤销，请确认已经导出需要保留的记录。')) { state = createState(DATA.version); lastResult = null; resetPracticeScope(); quizScope = null; const saved = await persist(); dialog.close(); toast(saved.durable ? '本机记录已清空。' : '仅清空了当前页面，未能写入本机；下次打开可能仍会出现旧记录。'); navigate('home'); } break;
   }
 }
 
@@ -616,7 +782,13 @@ document.addEventListener('change', (event) => {
     case 'practice-direction': practiceDirection = event.target.value; break;
     case 'practice-count': practiceCount = Number(event.target.value); break;
     case 'mistakes-only': practiceMode = event.target.checked ? 'mistakes' : 'practice'; break;
+    case 'quiz-count': quizCount = Number(event.target.value); break;
+    case 'quiz-minutes': quizMinutes = Number(event.target.value); break;
   }
+  const prefix = event.target.closest('[data-scope-editor]')?.dataset.scopeEditor ||
+    (['practice-direction', 'practice-count', 'mistakes-only'].includes(event.target.id) ? 'practice' :
+      ['quiz-count', 'quiz-minutes'].includes(event.target.id) ? 'quiz' : null);
+  if (prefix) updateScopePreview(prefix);
 });
 
 $('#import-file').addEventListener('change', async (event) => {
@@ -625,8 +797,8 @@ $('#import-file').addEventListener('change', async (event) => {
   try {
     if (file.size > 20 * 1024 * 1024) throw new Error('文件超过20MB，请选择有效的学习记录备份。');
     const imported = validateImport(JSON.parse(await file.text()), DATA);
-    if (!confirm(`即将用备份中的 ${imported.history.length} 条作答、${imported.exams.length} 次模拟记录替换本机记录。是否继续？`)) return;
-    state = imported; lastResult = null; const saved = await persist();
+    if (!confirm(`即将用备份中的 ${imported.history.length} 条作答、${imported.exams.length} 次模拟、${imported.quizzes.length} 次按范围测验记录替换本机记录。是否继续？`)) return;
+    state = imported; lastResult = null; resetPracticeScope(); quizScope = null; const saved = await persist();
     if (dialog.open) dialog.close();
     toast(saved.durable ? '记录已导入并保存到本机。' : '备份已在本页打开，尚未写入本机；下次打开可能仍是旧记录。请保留备份文件。'); navigate(state.activeSession && !state.activeSession.completed ? 'session' : 'report');
   } catch (error) { toast(`没有导入：${error.message}`); }
@@ -659,7 +831,7 @@ dialog.addEventListener('click', (event) => { if (event.target === dialog) { con
 
 try {
   loadSnapshot = await loadState(DATA.version);
-  state = validateImport(loadSnapshot, DATA);
+  state = updateLevelMilestones(DATA, normalizeStudyState(validateImport(loadSnapshot, DATA)));
   if (!state || state.schemaVersion !== 1) throw new Error('学习记录格式不支持，请先导出已有备份后处理。');
   route = location.hash.slice(1) || (state.activeSession && !state.activeSession.completed ? 'session' : 'home');
   render();
@@ -675,4 +847,4 @@ try {
 
 setInterval(updateTimer, 1000);
 // Read-only readiness counts; never exposes learning records or answer state.
-window.appDiagnostics = () => ({ ready: Boolean(state), version: DATA.version, cards: DATA.cards.length, questions: DATA.questions.length, candidates: DATA.questions.filter((item) => item.section6Candidate).length, storage: uiStorageStatus().mode, screen: route, activeSession: Boolean(state?.activeSession && !state.activeSession.completed), noRuntimeAI: true });
+window.appDiagnostics = () => ({ ready: Boolean(state), appVersion: '1.1', version: DATA.version, cards: DATA.cards.length, questions: DATA.questions.length, candidates: DATA.questions.filter((item) => item.section6Candidate).length, storage: uiStorageStatus().mode, screen: route, activeSession: Boolean(state?.activeSession && !state.activeSession.completed), noRuntimeAI: true });
